@@ -17,5 +17,7 @@ jobs:
         env:
           PERSONAL_ACCESS_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
         run: |
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "github-actions[bot]"
           git remote add target-repo https://$PERSONAL_ACCESS_TOKEN@github.com/jinyang628/expand-frontend-prod.git
           git push target-repo main:main
