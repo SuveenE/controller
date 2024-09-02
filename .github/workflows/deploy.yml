@@ -1,0 +1,21 @@
+name: Deploy
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  push_to_another_repo:
+    name: Deploy to production repo
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Push changes
+        env:
+          PERSONAL_ACCESS_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+        run: |
+          git remote add target-repo https://$PERSONAL_ACCESS_TOKEN@github.com/jinyang628/expand-frontend-prod.git
+          git push target-repo main:main
