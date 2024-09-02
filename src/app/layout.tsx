@@ -12,6 +12,12 @@ import PageLoader from "@/components/shared/page-loading-indicator";
 import { QueryProvider } from "@/components/shared/query-provider";
 import { Toaster } from "@/components/ui/toaster";
 import HeaderButtons from "@/components/shared/header/header-buttons";
+import { PHProvider } from '@/app/providers'
+import dynamic from 'next/dynamic'
+
+const PostHogPageView = dynamic(() => import('@/app/PostHogPageView'), {
+  ssr: false,
+})
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -44,7 +50,9 @@ export default function RootLayout({
             sizes="<generated>"
           />
         </head>
+        <PHProvider>
         <body className={inter.className}>
+          <PostHogPageView />
           <ThemeProvider
             attribute="class"
             defaultTheme="system"
@@ -67,6 +75,7 @@ export default function RootLayout({
             </ClerkLoaded>
           </ThemeProvider>
         </body>
+        </PHProvider>
       </html>
     </ClerkProvider>
   );
