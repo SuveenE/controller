@@ -1,17 +1,14 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
+import { ScrollBar } from "@/components/ui/scroll-area";
 import { Message, roleSchema } from "@/types/actions/query";
 import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
   TableHead,
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
-import { useEffect, useState } from "react";
-import { extractJsonAndText } from "@/lib/utils";
 
 
 type ChatContainerProps = {
