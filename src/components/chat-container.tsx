@@ -1,5 +1,18 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { Message, roleSchema } from "@/types/actions/query";
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table"
+import { useEffect, useState } from "react";
+import { extractJsonAndText } from "@/lib/utils";
+
 
 type ChatContainerProps = {
   chatHistory: Message[];
@@ -37,6 +50,39 @@ export default function ChatContainer({
             }`}
           >
             {message.content}
+            {message.data && (
+               <div className="relative mt-2 w-full overflow-auto">
+               <Table className="w-full">
+                 <TableHeader>
+                   <TableRow>
+                     {Object.keys(message.data[0]).map((key) => (
+                       <TableHead 
+                         key={key} 
+                         className="text-left text-gray-500 font-normal text-sm px-4 py-2 whitespace-nowrap"
+                       >
+                         {key.toLowerCase()}
+                       </TableHead>
+                     ))}
+                   </TableRow>
+                 </TableHeader>
+                 <TableBody>
+                   {message.data.map((row, rowIndex) => (
+                     <TableRow key={rowIndex}>
+                       {Object.values(row).map((value, cellIndex) => (
+                         <TableCell 
+                           key={cellIndex}
+                           className="px-4 py-2 whitespace-nowrap"
+                         >
+                           {typeof value === 'object' ? JSON.stringify(value) : String(value)}
+                         </TableCell>
+                       ))}
+                     </TableRow>
+                   ))}
+                 </TableBody>
+               </Table>
+               <ScrollBar orientation="horizontal" />
+             </div>
+            )}
           </div>
           {message.role === roleSchema.Values.user && (
             <Avatar className="ml-2">

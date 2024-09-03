@@ -8,6 +8,7 @@ export type Role = z.infer<typeof roleSchema>;
 export const messageSchema = z.object({
   role: roleSchema,
   content: z.string().min(1),
+  data: z.array(z.record(z.any())).nullable()
 });
 
 export type Message = z.infer<typeof messageSchema>;

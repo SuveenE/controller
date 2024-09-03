@@ -31,3 +31,52 @@ export function handleCopy(text: string, targetName: string) {
 export function capitaliseFirstLetter(string: string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
 }
+
+export function extractJsonAndText(input: string): string[] {
+  const result: string[] = [];
+  let currentIndex = 0;
+  let inBrackets = 0;
+  let inBraces = 0;
+  let start = 0;
+
+  for (let i = 0; i < input.length; i++) {
+    const char = input[i];
+
+    if (char === '[') {
+      if (inBrackets === 0 && inBraces === 0) {
+        if (i > currentIndex) {
+          result.push(input.slice(currentIndex, i).trim());
+        }
+        start = i;
+      }
+      inBrackets++;
+    } else if (char === ']') {
+      inBrackets--;
+      if (inBrackets === 0 && inBraces === 0) {
+        result.push(input.slice(start, i + 1));
+        currentIndex = i + 1;
+      }
+    } else if (char === '{') {
+      if (inBrackets === 0 && inBraces === 0) {
+        if (i > currentIndex) {
+          result.push(input.slice(currentIndex, i).trim());
+        }
+        start = i;
+      }
+      inBraces++;
+    } else if (char === '}') {
+      inBraces--;
+      if (inBrackets === 0 && inBraces === 0) {
+        result.push(input.slice(start, i + 1));
+        currentIndex = i + 1;
+      }
+    }
+  }
+
+  // Add any remaining text after the last JSON object or array
+  if (currentIndex < input.length) {
+    result.push(input.slice(currentIndex).trim());
+  }
+
+  return result.filter(item => item !== '');
+}

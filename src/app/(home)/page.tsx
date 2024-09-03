@@ -54,6 +54,7 @@ export default function HomePage() {
       const message = messageSchema.parse({
         role: roleSchema.Values.user,
         content: inputText,
+        data: null,
       });
       setChatHistory([...chatHistory, message]);
       

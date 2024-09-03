@@ -25,6 +25,7 @@
     "clsx": "^2.1.1",
     "fuse.js": "^7.0.0",
     "jest-fetch-mock": "^3.0.3",
+    "json-extract": "^0.1.1",
     "lucide-react": "^0.428.0",
     "next": "14.2.5",
     "next-themes": "^0.3.0",
