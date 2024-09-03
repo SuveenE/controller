@@ -134,10 +134,10 @@ export default function HomePage() {
           {integrationIcons}
         </ScrollArea>
       </div>
-      <div className="mx-4 w-full max-w-[calc(100%-200px)] flex flex-col justify-between">
+      <div className="mx-4 w-full max-w-[calc(100%-200px)] flex flex-col justify-between max-h-[800px]">
         <ScrollArea className="scroll-area flex-grow relative">
           <Button
-            className="absolute top-2 left-2 z-10 text-xs h-6"
+            className="absolute top-2 left-2 z-10 text-xs h-6 bg-white bg-opacity-70 backdrop-blur"
             onClick={() => {
               setChatHistory([])
               setInstance(null)
