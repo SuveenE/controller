@@ -7,11 +7,11 @@ import {
   SignedIn,
 } from "@clerk/nextjs";
 import "@/styles/globals.css";
-import { ThemeProvider } from "@/components/shared/theme/theme-provider";
+import { ThemeProvider } from "@/components/shared/theme/provider";
 import PageLoader from "@/components/shared/page-loading-indicator";
 import { QueryProvider } from "@/components/shared/query-provider";
 import { Toaster } from "@/components/ui/toaster";
-import HeaderButtons from "@/components/shared/header/header-buttons";
+import HeaderButtons from "@/components/shared/header/buttons";
 import { PHProvider } from '@/app/providers'
 import dynamic from 'next/dynamic'
 

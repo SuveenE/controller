@@ -5,7 +5,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import FeedbackForm from "./feedback-form";
+import FeedbackForm from "./form";
 import { useState } from "react";
 import { FeedbackRequest } from "@/types/actions/feedback/form";
 import { submitFeedback } from "@/actions/feedback/submit";

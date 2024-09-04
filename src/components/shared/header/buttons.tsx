@@ -2,8 +2,8 @@
 
 import React from "react";
 import { SignedIn, UserButton } from "@clerk/nextjs";
-import { ThemeToggle } from "../theme/theme-toggle";
-import FeedbackButton from "./feedback/feedback-button";
+import { ThemeToggle } from "@/components/shared/theme/toggle";
+import FeedbackButton from "@/components/shared/header/feedback/button";
 import { SignedOut } from "@clerk/nextjs";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
