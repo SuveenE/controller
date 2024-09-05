@@ -41,14 +41,14 @@ export default function FeedbackForm({
 
   return (
     <Form {...form}>
-      <form className="space-y-4" onSubmit={form.handleSubmit(onSubmit)}>
-        <FormField
+      <form className="space-y-4 max-h-96" onSubmit={form.handleSubmit(onSubmit)}>
+      <FormField
           control={form.control}
           name="feedback"
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <Textarea {...field} />
+                <Textarea className="max-h-80" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>

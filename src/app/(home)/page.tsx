@@ -127,13 +127,13 @@ export default function HomePage() {
   }, [isLoaded, user]);
 
   return (
-    <div className="flex flex-row min-h-[650px] justify-center">
+    <div className="flex flex-row h-[calc(100vh-150px)] justify-center">
       <div className="w-[150px]">
         <ScrollArea className="scroll-area h-full">
           {integrationIcons}
         </ScrollArea>
       </div>
-      <div className="mx-4 w-full max-w-[calc(100%-200px)] flex flex-col justify-between max-h-[800px]">
+      <div className="mx-4 w-full max-w-[calc(100%-200px)] flex flex-col justify-between">
         <ScrollArea className="scroll-area flex-grow relative">
           <Button
             className="absolute top-2 left-2 z-10 text-xs h-6 bg-slate-500 dark:bg-slate-200 text-black bg-opacity-20 backdrop-blur transition-none hover:bg-opacity-50 hover:opacity-100"
