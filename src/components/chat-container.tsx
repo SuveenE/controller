@@ -46,7 +46,15 @@ export default function ChatContainer({
                   : "bg-gray-300 text-black"
               }`}
             >
-              <ReactMarkdown>{message.content}</ReactMarkdown>
+              <ReactMarkdown
+                components={{
+                  a: ({ node, ...props }) => (
+                    <a {...props} className="text-blue-500 underline" />
+                  ),
+                }}
+              >
+                {message.content}
+              </ReactMarkdown>
               {message.data && (
                 <div className="relative mt-2 w-full max-w-screen-xl overflow-auto">
                 <Table className="w-full">
@@ -70,7 +78,15 @@ export default function ChatContainer({
                             key={cellIndex}
                             className="px-4 py-2 whitespace-nowrap"
                           >
-                            {typeof value === 'object' ? JSON.stringify(value) : String(value)}
+                            <ReactMarkdown
+                              components={{
+                                a: ({ node, ...props }) => (
+                                  <a {...props} className="text-blue-500 underline" />
+                                ),
+                              }}
+                            >
+                              {typeof value === 'object' ? JSON.stringify(value) : String(value)}
+                            </ReactMarkdown>
                           </TableCell>
                         ))}
                       </TableRow>
