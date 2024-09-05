@@ -148,6 +148,7 @@ export default function HomePage() {
             chatHistory={chatHistory}
             profileImageUrl={profileImageUrl}
             fallbackCharacter={user?.firstName?.charAt(0) || "U"}
+            isResponseFetching={sendMessage.status === "pending"}
           />
         </ScrollArea>
         <div className="flex mt-5 space-x-2 items-end relative">

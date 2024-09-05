@@ -10,17 +10,21 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import ReactMarkdown from 'react-markdown';
+import Loader from 'react-loaders'
+import 'loaders.css/src/animations/ball-pulse.scss'
 
 type ChatContainerProps = {
   chatHistory: Message[];
   profileImageUrl: string;
   fallbackCharacter: string;
+  isResponseFetching: boolean;
 };
 
 export default function ChatContainer({
   chatHistory,
   profileImageUrl,
   fallbackCharacter,
+  isResponseFetching
 }: ChatContainerProps) {
   return (
     <div>
@@ -106,6 +110,17 @@ export default function ChatContainer({
           </div>
         </div>
       ))}
+      {isResponseFetching && (
+        <div className="flex items-start mb-4 justify-start">
+          <Avatar className="mr-2">
+            <AvatarImage src="/path/to/assistant-avatar.png" />
+            <AvatarFallback>AI</AvatarFallback>
+          </Avatar>
+          <div className="p-2 rounded-lg bg-gray-300 text-black">
+            <Loader type="ball-pulse" active={true} />
+          </div>
+        </div>
+      )}
     </div>
   );
 }
