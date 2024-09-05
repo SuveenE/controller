@@ -46,8 +46,8 @@ export default function ChatContainer({
             <div
               className={`p-2 rounded-lg ${
                 message.role === roleSchema.Values.user
-                  ? "bg-blue-500 text-white"
-                  : "bg-gray-300 text-black"
+                  ? "bg-blue-500 dark:bg-blue-800 text-white"
+                  : "bg-gray-300 dark:bg-gray-400 text-black"
               }`}
             >
               <ReactMarkdown
