@@ -10,7 +10,13 @@ import { useEffect, useRef, useState } from "react";
 import IntegrationIcon from "@/components/home/integration-icon";
 import ChatContainer from "@/components/chat-container";
 import InputContainer from "@/components/home/input-container";
-import { Message, messageSchema, queryRequestSchema, queryResponseSchema, roleSchema } from "@/types/actions/query";
+import {
+  Message,
+  messageSchema,
+  queryRequestSchema,
+  queryResponseSchema,
+  roleSchema,
+} from "@/types/actions/query";
 import { toast } from "@/components/ui/use-toast";
 import { query } from "@/actions/query";
 import { useIntegrationsStore } from "@/types/store/integrations";
@@ -50,14 +56,14 @@ export default function HomePage() {
         });
         return chatHistory;
       }
-      
+
       const message = messageSchema.parse({
         role: roleSchema.Values.user,
         content: inputText,
         data: null,
       });
       setChatHistory([...chatHistory, message]);
-      
+
       const parsedQueryRequest = queryRequestSchema.parse({
         message: message,
         chat_history: chatHistory,
@@ -65,7 +71,7 @@ export default function HomePage() {
         integrations: integrationsState.integrations,
         instance: instance,
       });
-      
+
       const response = await query(parsedQueryRequest);
       const parsedQueryResponse = queryResponseSchema.parse(response);
       setInstance(parsedQueryResponse.instance);
@@ -75,7 +81,7 @@ export default function HomePage() {
       setChatHistory(newChatHistory);
     },
   });
-  
+
   const { integrationsState, setIntegrationsState } = useIntegrationsStore();
   const [profileImageUrl, setProfileImageUrl] = useState<string>("");
   const isInitializedRef = useRef(false);
@@ -83,7 +89,9 @@ export default function HomePage() {
   const clickIntegration = async (integration: Integration) => {
     if (integrationsState.integrations.includes(integration)) {
       setIntegrationsState({
-        integrations: integrationsState.integrations.filter((i) => i !== integration),
+        integrations: integrationsState.integrations.filter(
+          (i) => i !== integration,
+        ),
       });
     } else {
       setIntegrationsState({
@@ -94,16 +102,20 @@ export default function HomePage() {
 
   const removeIntegration = (integration: Integration) => {
     setIntegrationsState({
-      integrations: integrationsState.integrations.filter((i) => i !== integration),
+      integrations: integrationsState.integrations.filter(
+        (i) => i !== integration,
+      ),
     });
-  }
+  };
 
   const integrationIcons = Object.values(integrationEnum.Values).map(
     (integration) => (
       <IntegrationIcon
         key={`${integration}_icon`}
         integration={integration as Integration}
-        isHighlighted={integrationsState.integrations.includes(integration as Integration)}
+        isHighlighted={integrationsState.integrations.includes(
+          integration as Integration,
+        )}
         apiKey={apiKey ?? ""}
         clickIntegration={clickIntegration}
         removeIntegration={removeIntegration}
@@ -138,9 +150,9 @@ export default function HomePage() {
           <Button
             className="absolute top-2 left-2 z-10 text-xs h-6 bg-opacity-20 backdrop-blur transition-none hover:bg-opacity-50 hover:opacity-100"
             onClick={() => {
-              setChatHistory([])
-              setInstance(null)
-            }}   
+              setChatHistory([]);
+              setInstance(null);
+            }}
           >
             CLEAR
           </Button>

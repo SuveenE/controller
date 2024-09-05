@@ -21,7 +21,7 @@ export async function query(input: QueryRequest): Promise<QueryResponse> {
 
     return queryResponse;
   } catch (error) {
-    console.error("Error in query endpoint")
+    console.error("Error in query endpoint");
     throw error;
   }
 }

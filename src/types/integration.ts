@@ -8,7 +8,7 @@ export const integrationEnum = z.enum(["gmail", "calendar", "linear", "slack"]);
 export type Integration = z.infer<typeof integrationEnum>;
 export const integrationsStateSchema = z.object({
   integrations: z.array(integrationEnum),
-})
+});
 export type IntegrationsState = z.infer<typeof integrationsStateSchema>;
 export const defaultIntegrationsState: IntegrationsState = {
   integrations: [],

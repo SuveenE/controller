@@ -8,10 +8,10 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table"
-import ReactMarkdown from 'react-markdown';
-import Loader from 'react-loaders'
-import 'loaders.css/src/animations/ball-pulse.scss'
+} from "@/components/ui/table";
+import ReactMarkdown from "react-markdown";
+import Loader from "react-loaders";
+import "loaders.css/src/animations/ball-pulse.scss";
 
 type ChatContainerProps = {
   chatHistory: Message[];
@@ -24,7 +24,7 @@ export default function ChatContainer({
   chatHistory,
   profileImageUrl,
   fallbackCharacter,
-  isResponseFetching
+  isResponseFetching,
 }: ChatContainerProps) {
   return (
     <div>
@@ -61,44 +61,49 @@ export default function ChatContainer({
               </ReactMarkdown>
               {message.data && (
                 <div className="relative mt-2 w-full max-w-screen-xl overflow-auto">
-                <Table className="w-full">
-                  <TableHeader>
-                    <TableRow>
-                      {Object.keys(message.data[0]).map((key) => (
-                        <TableHead 
-                          key={key} 
-                          className="text-left text-gray-500 font-normal text-sm px-4 py-2 whitespace-nowrap"
-                        >
-                          {key.toLowerCase()}
-                        </TableHead>
-                      ))}
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {message.data.map((row, rowIndex) => (
-                      <TableRow key={rowIndex}>
-                        {Object.values(row).map((value, cellIndex) => (
-                          <TableCell 
-                            key={cellIndex}
-                            className="px-4 py-2 whitespace-nowrap"
+                  <Table className="w-full">
+                    <TableHeader>
+                      <TableRow>
+                        {Object.keys(message.data[0]).map((key) => (
+                          <TableHead
+                            key={key}
+                            className="text-left text-gray-500 font-normal text-sm px-4 py-2 whitespace-nowrap"
                           >
-                            <ReactMarkdown
-                              components={{
-                                a: ({ node, ...props }) => (
-                                  <a {...props} className="text-blue-500 underline" />
-                                ),
-                              }}
-                            >
-                              {typeof value === 'object' ? JSON.stringify(value) : String(value)}
-                            </ReactMarkdown>
-                          </TableCell>
+                            {key.toLowerCase()}
+                          </TableHead>
                         ))}
                       </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-                <ScrollBar orientation="horizontal" />
-              </div>
+                    </TableHeader>
+                    <TableBody>
+                      {message.data.map((row, rowIndex) => (
+                        <TableRow key={rowIndex}>
+                          {Object.values(row).map((value, cellIndex) => (
+                            <TableCell
+                              key={cellIndex}
+                              className="px-4 py-2 whitespace-nowrap"
+                            >
+                              <ReactMarkdown
+                                components={{
+                                  a: ({ node, ...props }) => (
+                                    <a
+                                      {...props}
+                                      className="text-blue-500 underline"
+                                    />
+                                  ),
+                                }}
+                              >
+                                {typeof value === "object"
+                                  ? JSON.stringify(value)
+                                  : String(value)}
+                              </ReactMarkdown>
+                            </TableCell>
+                          ))}
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                  <ScrollBar orientation="horizontal" />
+                </div>
               )}
             </div>
             {message.role === roleSchema.Values.user && (

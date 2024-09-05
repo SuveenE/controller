@@ -1,6 +1,6 @@
-import { z } from 'zod';
-import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
+import { z } from "zod";
+import { create } from "zustand";
+import { persist } from "zustand/middleware";
 
 export const createPersistedStore = <T, K extends string, S extends string>(
   storeName: string,
@@ -30,7 +30,7 @@ export const createPersistedStore = <T, K extends string, S extends string>(
 
               return { ...store, [stateKey]: updatedState };
             }),
-        } as StoreType),
+        }) as StoreType,
       {
         name: storeName,
         getStorage: () => localStorage,

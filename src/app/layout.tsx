@@ -12,12 +12,12 @@ import PageLoader from "@/components/shared/page-loading-indicator";
 import { QueryProvider } from "@/components/shared/query-provider";
 import { Toaster } from "@/components/ui/toaster";
 import HeaderButtons from "@/components/shared/header/buttons";
-import { PHProvider } from '@/app/providers'
-import dynamic from 'next/dynamic'
+import { PHProvider } from "@/app/providers";
+import dynamic from "next/dynamic";
 
-const PostHogPageView = dynamic(() => import('@/app/PostHogPageView'), {
+const PostHogPageView = dynamic(() => import("@/app/PostHogPageView"), {
   ssr: false,
-})
+});
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -51,30 +51,30 @@ export default function RootLayout({
           />
         </head>
         <PHProvider>
-        <body className={inter.className}>
-          <PostHogPageView />
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
-          >
-            <ClerkLoading>
-              <PageLoader />
-            </ClerkLoading>
-            <ClerkLoaded>
-              <div className={`flex flex-col w-full p-8`}>
-                <SignedIn>
-                  <HeaderButtons />
-                </SignedIn>
-              </div>
-              <QueryProvider>
-                {children}
-                <Toaster />
-              </QueryProvider>
-            </ClerkLoaded>
-          </ThemeProvider>
-        </body>
+          <body className={inter.className}>
+            <PostHogPageView />
+            <ThemeProvider
+              attribute="class"
+              defaultTheme="system"
+              enableSystem
+              disableTransitionOnChange
+            >
+              <ClerkLoading>
+                <PageLoader />
+              </ClerkLoading>
+              <ClerkLoaded>
+                <div className={`flex flex-col w-full p-8`}>
+                  <SignedIn>
+                    <HeaderButtons />
+                  </SignedIn>
+                </div>
+                <QueryProvider>
+                  {children}
+                  <Toaster />
+                </QueryProvider>
+              </ClerkLoaded>
+            </ThemeProvider>
+          </body>
         </PHProvider>
       </html>
     </ClerkProvider>

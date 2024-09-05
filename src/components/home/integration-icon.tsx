@@ -27,7 +27,7 @@ export default function IntegrationIcon({
   isHighlighted,
   apiKey,
   clickIntegration,
-  removeIntegration
+  removeIntegration,
 }: IntegrationIconProps) {
   const IconComponent = integrationIconMapping[integration];
   const [showAuthRequirementDialog, setShowAuthRequirementDialog] =
@@ -97,7 +97,9 @@ export default function IntegrationIcon({
           className={`flex items-center justify-end group transition-opacity duration-300 ${isHighlighted ? "opacity-100" : "opacity-30"} ${isLoading ? "pointer-events-none animate-pulse" : ""}`}
           onClick={() => !isLoading && handleIntegrationClick(integration)}
         >
-          <p className={`group-hover:underline group-hover:text-glow group-hover:cursor-pointer ${isLoading ? "animate-pulse" : ""}`}>
+          <p
+            className={`group-hover:underline group-hover:text-glow group-hover:cursor-pointer ${isLoading ? "animate-pulse" : ""}`}
+          >
             {capitaliseFirstLetter(integration)}
           </p>
           <IconComponent className="m-2 w-8 h-8 group-hover:cursor-pointer" />

@@ -42,7 +42,7 @@ export function extractJsonAndText(input: string): string[] {
   for (let i = 0; i < input.length; i++) {
     const char = input[i];
 
-    if (char === '[') {
+    if (char === "[") {
       if (inBrackets === 0 && inBraces === 0) {
         if (i > currentIndex) {
           result.push(input.slice(currentIndex, i).trim());
@@ -50,13 +50,13 @@ export function extractJsonAndText(input: string): string[] {
         start = i;
       }
       inBrackets++;
-    } else if (char === ']') {
+    } else if (char === "]") {
       inBrackets--;
       if (inBrackets === 0 && inBraces === 0) {
         result.push(input.slice(start, i + 1));
         currentIndex = i + 1;
       }
-    } else if (char === '{') {
+    } else if (char === "{") {
       if (inBrackets === 0 && inBraces === 0) {
         if (i > currentIndex) {
           result.push(input.slice(currentIndex, i).trim());
@@ -64,7 +64,7 @@ export function extractJsonAndText(input: string): string[] {
         start = i;
       }
       inBraces++;
-    } else if (char === '}') {
+    } else if (char === "}") {
       inBraces--;
       if (inBrackets === 0 && inBraces === 0) {
         result.push(input.slice(start, i + 1));
@@ -78,5 +78,5 @@ export function extractJsonAndText(input: string): string[] {
     result.push(input.slice(currentIndex).trim());
   }
 
-  return result.filter(item => item !== '');
+  return result.filter((item) => item !== "");
 }

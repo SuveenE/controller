@@ -16,16 +16,17 @@ export default function InputContainer({
 }: InputContainerProps) {
   const [inputText, setInputText] = useState<string>("");
 
-
   const handleSendMessage = () => {
     const trimmedInputText: string = inputText.trim();
     setInputText("");
     sendMessage(trimmedInputText);
-  }
+  };
 
   const canSendMessage = () => {
-    return inputText.trim().length > 0 && !isResponseFetching && !isButtonDisabled
-  }
+    return (
+      inputText.trim().length > 0 && !isResponseFetching && !isButtonDisabled
+    );
+  };
 
   useEffect(() => {
     const handleKeyDown = async (event: KeyboardEvent) => {
@@ -67,7 +68,7 @@ export default function InputContainer({
       )}
       <Button
         id="send-btn"
-        className={`${canSendMessage() ? 'animate-bounce' : ''}`}
+        className={`${canSendMessage() ? "animate-bounce" : ""}`}
         disabled={!canSendMessage()}
         onClick={(e) => {
           e.preventDefault();
