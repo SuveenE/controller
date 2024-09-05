@@ -16,10 +16,15 @@ export default function InputContainer({
 }: InputContainerProps) {
   const [inputText, setInputText] = useState<string>("");
 
+
   const handleSendMessage = () => {
     const trimmedInputText: string = inputText.trim();
     setInputText("");
     sendMessage(trimmedInputText);
+  }
+
+  const canSendMessage = () => {
+    return inputText.trim().length > 0 && !isResponseFetching && !isButtonDisabled
   }
 
   useEffect(() => {
@@ -46,6 +51,7 @@ export default function InputContainer({
         className="border-2 rounded resize-none max-h-[300px] overflow-auto"
         value={inputText}
         disabled={isResponseFetching}
+        placeholder="Type a message..."
         rows={1}
         onInput={(e) => {
           const target = e.target as HTMLTextAreaElement;
@@ -61,7 +67,8 @@ export default function InputContainer({
       )}
       <Button
         id="send-btn"
-        disabled={!inputText || !inputText.trim() || isResponseFetching || isButtonDisabled}
+        className={`${canSendMessage() ? 'animate-bounce' : ''}`}
+        disabled={!canSendMessage()}
         onClick={(e) => {
           e.preventDefault();
           handleSendMessage();

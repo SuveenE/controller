@@ -9,7 +9,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
-
+import ReactMarkdown from 'react-markdown';
 
 type ChatContainerProps = {
   chatHistory: Message[];
@@ -46,7 +46,7 @@ export default function ChatContainer({
                   : "bg-gray-300 text-black"
               }`}
             >
-              {message.content}
+              <ReactMarkdown>{message.content}</ReactMarkdown>
               {message.data && (
                 <div className="relative mt-2 w-full max-w-screen-xl overflow-auto">
                 <Table className="w-full">
