@@ -16,6 +16,7 @@ export async function query(input: QueryRequest): Promise<QueryResponse> {
     const response = await axios.post(
       `${BACKEND_URL}/${SERVICE_ENDPOINT}`,
       input,
+      { timeout: 40000 }
     );
     const queryResponse = queryResponseSchema.parse(response.data);
 
