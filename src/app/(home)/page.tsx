@@ -71,7 +71,7 @@ export default function HomePage() {
         integrations: integrationsState.integrations,
         instance: instance,
       });
-
+      
       const response = await query(parsedQueryRequest);
       const parsedQueryResponse = queryResponseSchema.parse(response);
       console.log(parsedQueryResponse);
@@ -81,6 +81,14 @@ export default function HomePage() {
     onSuccess: (newChatHistory: Message[]) => {
       setChatHistory(newChatHistory);
     },
+    onError: (error) => {
+      console.error("Error in sending message", error);
+      toast({
+        title: "Error in sending message",
+        description: "Please try again later",
+        duration: 3000,
+      });
+    }
   });
 
   const { integrationsState, setIntegrationsState } = useIntegrationsStore();
