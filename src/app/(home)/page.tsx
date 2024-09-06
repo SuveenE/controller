@@ -74,6 +74,7 @@ export default function HomePage() {
 
       const response = await query(parsedQueryRequest);
       const parsedQueryResponse = queryResponseSchema.parse(response);
+      console.log(parsedQueryResponse);
       setInstance(parsedQueryResponse.instance);
       return parsedQueryResponse.chat_history;
     },

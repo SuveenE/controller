@@ -26,7 +26,6 @@ export default function ChatContainer({
   fallbackCharacter,
   isResponseFetching,
 }: ChatContainerProps) {
-  console.log(chatHistory);
   return (
     <div>
       {chatHistory.map((message: Message, index: number) => (
