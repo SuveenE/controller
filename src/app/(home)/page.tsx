@@ -72,7 +72,26 @@ export default function HomePage() {
         instance: instance,
       });
       
-      const response = await query(parsedQueryRequest);
+      // const response = await query(parsedQueryRequest);
+      let response;
+      try {
+        console.log("Sending query request:", parsedQueryRequest);
+        response = await query(parsedQueryRequest);
+        console.log("Received query response:", response);
+      } catch (error) {
+        console.error("Error in querying", error);
+        toast({
+          title: "Error in querying",
+          description: "Please try again later",
+          duration: 3000,
+        });
+        return chatHistory;
+      }
+
+
+
+
+
       const parsedQueryResponse = queryResponseSchema.parse(response);
       console.log(parsedQueryResponse);
       setInstance(parsedQueryResponse.instance);
