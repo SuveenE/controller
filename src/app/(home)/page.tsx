@@ -21,6 +21,7 @@ import { toast } from "@/components/ui/use-toast";
 import { query } from "@/actions/query";
 import { useIntegrationsStore } from "@/types/store/integrations";
 import { Button } from "@/components/ui/button";
+import { ZodError } from "zod";
 
 export default function HomePage() {
   const { user, isLoaded } = useUser();
@@ -73,29 +74,47 @@ export default function HomePage() {
       });
       
       // const response = await query(parsedQueryRequest);
+      
+      
       let response;
-      try {
-        console.log("Sending query request:", parsedQueryRequest);
-        response = await query(parsedQueryRequest);
-        console.log("Received query response:", response);
-      } catch (error) {
-        console.error("Error in querying", error);
-        toast({
-          title: "Error in querying",
-          description: "Please try again later",
-          duration: 3000,
-        });
-        return chatHistory;
+      // eslint-disable-next-line no-constant-condition
+      while (true) {
+        try {
+          console.log("Sending query request:", parsedQueryRequest);
+          response = await query(parsedQueryRequest);
+          console.log("Received query response:", response);
+          
+          // Validate the response shape
+          const parsedQueryResponse = queryResponseSchema.parse(response);
+          console.log(parsedQueryResponse);
+          setInstance(parsedQueryResponse.instance);
+          return parsedQueryResponse.chat_history;
+        } catch (error) {
+          console.error("Error in querying or response shape mismatch", error);
+          toast({
+            title: "Error in querying",
+            description: "Please try again later",
+            duration: 3000,
+          });
+          
+          // If the error is due to response shape mismatch, continue listening
+          if (error instanceof ZodError) {
+            console.warn("Response shape mismatch, continuing to listen...");
+            continue;
+          }
+          // For other errors, return the current chat history
+          return chatHistory;
+        }
       }
 
 
 
 
 
-      const parsedQueryResponse = queryResponseSchema.parse(response);
-      console.log(parsedQueryResponse);
-      setInstance(parsedQueryResponse.instance);
-      return parsedQueryResponse.chat_history;
+      // const parsedQueryResponse = queryResponseSchema.parse(response);
+      // console.log(parsedQueryResponse);
+      // setInstance(parsedQueryResponse.instance);
+      // return parsedQueryResponse.chat_history;
     },
     onSuccess: (newChatHistory: Message[]) => {
       setChatHistory(newChatHistory);
