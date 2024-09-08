@@ -18,9 +18,9 @@ export default function HomePage() {
         <ApiKey apiKey={apiKey} updateApiKey={updateApiKey} />
       </div>
       <div className="grid grid-cols-4 gap-4 p-4 max-w-[1000px] mx-auto">
-        {Object.values(integrationEnum.Values).map((integration, index) => (
+        {Object.values(integrationEnum.Values).map((integration) => (
           <IntegrationAuth
-            key={`${integration}_${index}`}
+            key={`${integration}_icon`}
             integration={integration as Integration}
             apiKey={apiKey ?? ""}
           />

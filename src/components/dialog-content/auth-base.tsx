@@ -53,8 +53,8 @@ export default function AuthDialogContent({
       const response = await isUserAuthenticated(parsedTokenGetRequest);
       return response.is_authenticated;
     },
-    staleTime: 5 * 60 * 1000, // 5 minutes
-    refetchInterval: 5 * 60 * 1000, // Refetch every 5 minutes
+    staleTime: 15 * 60 * 1000,
+    refetchInterval: 15 * 60 * 1000,
     refetchOnWindowFocus: false,
   });
 
