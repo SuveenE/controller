@@ -60,7 +60,7 @@ export default function ChatContainer({
                 {message.content}
               </ReactMarkdown>
               {message.data && (
-                <div className="relative mt-2 w-full max-w-screen-xl overflow-auto">
+                <div className="relative mt-2 w-full max-w-screen-lg overflow-auto">
                   <Table className="w-full">
                     <TableHeader>
                       <TableRow>
