@@ -65,7 +65,7 @@ export default function AuthDialogContent({
 
   useEffect(() => {
     setOauthUrl(
-      `/api/oauth2/login?clientId=${encodeURIComponent(clientId)}&clientSecret=${encodeURIComponent(clientSecret)}&scope=${encodeURIComponent(scope)}&expandApiKey=${encodeURIComponent(apiKey)}&tableName=${encodeURIComponent(name.toLowerCase())}&loginBase=${encodeURIComponent(loginBase)}&exchangeBase=${encodeURIComponent(exchangeBase)}&redirect_uri=${encodeURIComponent(`${process.env.NEXT_PUBLIC_DEFAULT_SITE_URL}/api/oauth2/callback`)}&code_challenge=${encodeURIComponent("y_SfRG4BmOES02uqWeIkIgLQAlTBggyf_G7uKT51ku8")}&code_challenge_method=S256`,
+      `/api/oauth2/login?clientId=${encodeURIComponent(clientId)}&clientSecret=${encodeURIComponent(clientSecret)}&scope=${encodeURIComponent(scope)}&expandApiKey=${encodeURIComponent(apiKey)}&tableName=${encodeURIComponent(name.toLowerCase())}&loginBase=${encodeURIComponent(loginBase)}&exchangeBase=${encodeURIComponent(exchangeBase)}&redirect_uri=${encodeURIComponent(`${process.env.NEXT_PUBLIC_DEFAULT_SITE_URL}/api/oauth2/callback`)}&code_challenge=challenge&code_challenge_method=plain`,
     );
   }, [clientId, clientSecret, apiKey, scope, name, loginBase, exchangeBase]);
 
