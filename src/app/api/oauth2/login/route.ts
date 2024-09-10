@@ -49,7 +49,7 @@ export async function GET(request: NextRequest) {
     "redirect_uri",
     `${process.env.NEXT_PUBLIC_DEFAULT_SITE_URL}/api/oauth2/callback`,
   );
-  console.log("HELP ME");
+  console.log("HELP ME check if redirect_uri is correct");
   console.log("redirect_uri", `${process.env.NEXT_PUBLIC_DEFAULT_SITE_URL}/api/oauth2/callback`);
   authUrl.searchParams.append("scope", scope);
   authUrl.searchParams.append("state", state);
@@ -57,6 +57,6 @@ export async function GET(request: NextRequest) {
   authUrl.searchParams.append("prompt", "consent");
   authUrl.searchParams.append("code_challenge", code_challenge);
   authUrl.searchParams.append("code_challenge_method", code_challenge_method);
-
+  console.log(authUrl);
   return NextResponse.redirect(authUrl);
 }
