@@ -3,6 +3,7 @@ import GmailAuthDialogContent from "@/components/dialog-content/gmail";
 import GoogleCalendarAuthDialogContent from "@/components/dialog-content/calendar";
 import LinearAuthDialogContent from "@/components/dialog-content/linear";
 import SlackAuthDialogContent from "@/components/dialog-content/slack";
+import XAuthDialogContent from "@/components/dialog-content/x";
 
 type RoutingAuthDialogContentProps = {
   apiKey: string;
@@ -50,6 +51,16 @@ export default function RoutingAuthDialogContent({
           exchangeBase="https://slack.com/api/oauth.v2.access"
         />
       );
+      break;
+    case integrationEnum.Values.x:
+      dialogContent = (
+        <XAuthDialogContent
+          apiKey={apiKey}
+          loginBase="https://twitter.com/i/oauth2/authorize"
+          exchangeBase="https://api.twitter.com/oauth/access_token"
+        />
+      );
+      break;
   }
   return dialogContent;
 }

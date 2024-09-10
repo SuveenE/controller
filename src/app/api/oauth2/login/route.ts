@@ -24,6 +24,9 @@ export async function GET(request: NextRequest) {
   // We need to know which is the base url of the specific integration we are initiating token exchange with
   const exchangeBase = searchParams.get("exchangeBase") || "";
 
+  const code_challenge = searchParams.get("code_challenge") || "";
+  const code_challenge_method = searchParams.get("code_challenge_method") || "";
+
   if (!clientId || !clientSecret) {
     return NextResponse.json(
       { error: "Client ID and Client Secret are required" },
@@ -50,6 +53,8 @@ export async function GET(request: NextRequest) {
   authUrl.searchParams.append("state", state);
   authUrl.searchParams.append("access_type", "offline");
   authUrl.searchParams.append("prompt", "consent");
+  authUrl.searchParams.append("code_challenge", code_challenge);
+  authUrl.searchParams.append("code_challenge_method", code_challenge_method);
 
   return NextResponse.redirect(authUrl);
 }

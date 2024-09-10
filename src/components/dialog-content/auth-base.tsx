@@ -14,6 +14,7 @@ import { tokenGetRequestSchema } from "@/types/actions/token";
 import { isUserAuthenticated } from "@/actions/token";
 import { queryClient } from "@/components/shared/query-provider";
 import { INTEGRATION_AUTH_STATUS_QUERY_KEY } from "@/constants/keys";
+import { randomBytes, createHash } from "crypto";
 
 const BASE_URL = process.env.NEXT_PUBLIC_DEFAULT_SITE_URL;
 
@@ -63,8 +64,24 @@ export default function AuthDialogContent({
   };
 
   useEffect(() => {
+    const generateCodeChallenge = (verifier: string) => {
+      return createHash("sha256")
+        .update(verifier)
+        .digest("base64")
+        .replace(/\+/g, "-")
+        .replace(/\//g, "_")
+        .replace(/=+$/, ""); // Make it URL-safe
+    };
+
+    const codeVerifier: string = randomBytes(32)
+      .toString("base64")
+      .replace(/\+/g, "-")
+      .replace(/\//g, "_")
+      .replace(/=+$/, ""); // Make it URL-safe
+    const codeChallenge: string = generateCodeChallenge(codeVerifier);
+
     setOauthUrl(
-      `/api/oauth2/login?clientId=${encodeURIComponent(clientId)}&clientSecret=${encodeURIComponent(clientSecret)}&scope=${encodeURIComponent(scope)}&expandApiKey=${encodeURIComponent(apiKey)}&tableName=${encodeURIComponent(name.toLowerCase())}&loginBase=${encodeURIComponent(loginBase)}&exchangeBase=${encodeURIComponent(exchangeBase)}`,
+      `/api/oauth2/login?clientId=${encodeURIComponent(clientId)}&clientSecret=${encodeURIComponent(clientSecret)}&scope=${encodeURIComponent(scope)}&expandApiKey=${encodeURIComponent(apiKey)}&tableName=${encodeURIComponent(name.toLowerCase())}&loginBase=${encodeURIComponent(loginBase)}&exchangeBase=${encodeURIComponent(exchangeBase)}&code_challenge=${encodeURIComponent(codeChallenge)}&code_challenge_method=S256`,
     );
   }, [clientId, clientSecret, apiKey, scope, name, loginBase, exchangeBase]);
 
@@ -74,19 +91,6 @@ export default function AuthDialogContent({
     <DialogHeader>
       <div className="flex flex-row items-center justify-between space-x-3 mr-4">
         <DialogTitle className="pb-2">{name}</DialogTitle>
-        {/* {isLoading ? (
-                    <Loader/>
-                ) : isAuthenticated ? (
-                    <div className="flex items-center text-green-600">
-                    <CheckCircle className="h-5 w-5" />
-                    <span className="ml-2">Authenticated</span>
-                    </div>
-                ) : (
-                    <div className="flex items-center text-red-600">
-                    <XCircle className="h-5 w-5" />
-                    <span className="ml-2">Not Authenticated</span>
-                    </div>
-                )} */}
       </div>
       <DialogDescription>OAuth Redirect URL</DialogDescription>
       <div className="flex items-center space-x-2">

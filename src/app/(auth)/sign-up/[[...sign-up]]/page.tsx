@@ -4,7 +4,7 @@ import { dark } from "@clerk/themes";
 import { useTheme } from "next-themes";
 import { SignUp } from "@clerk/nextjs";
 
-const SignUpPage = () => {
+export default function SignUpPage() {
   const { resolvedTheme } = useTheme();
 
   return (
@@ -15,6 +15,4 @@ const SignUpPage = () => {
       }}
     />
   );
-};
-
-export default SignUpPage;
+}

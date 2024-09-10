@@ -1,10 +1,16 @@
 import { z } from "zod";
 import { IconType } from "react-icons/lib";
 import { BiLogoGmail } from "react-icons/bi";
-import { SiGooglecalendar, SiSlack } from "react-icons/si";
-import { SiLinear } from "react-icons/si";
+import { SiGooglecalendar, SiSlack, SiLinear } from "react-icons/si";
+import { FaXTwitter } from "react-icons/fa6";
 
-export const integrationEnum = z.enum(["gmail", "calendar", "linear", "slack"]);
+export const integrationEnum = z.enum([
+  "gmail",
+  "calendar",
+  "linear",
+  "slack",
+  "x",
+]);
 export type Integration = z.infer<typeof integrationEnum>;
 export const integrationsStateSchema = z.object({
   integrations: z.array(integrationEnum),
@@ -25,6 +31,7 @@ export const integrationIconMapping: IntegrationIconMapping = {
   calendar: SiGooglecalendar,
   linear: SiLinear,
   slack: SiSlack,
+  x: FaXTwitter,
 };
 
 export type AuthParamProps = {

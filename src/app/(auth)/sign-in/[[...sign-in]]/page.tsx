@@ -3,7 +3,7 @@ import { SignIn } from "@clerk/nextjs";
 import { useTheme } from "next-themes";
 import { dark } from "@clerk/themes";
 
-const SignInPage = () => {
+export default function SignInPage() {
   const { resolvedTheme } = useTheme();
 
   return (
@@ -14,6 +14,4 @@ const SignInPage = () => {
       }}
     />
   );
-};
-
-export default SignInPage;
+}
