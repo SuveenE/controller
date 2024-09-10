@@ -26,6 +26,7 @@ export async function GET(request: NextRequest) {
 
   const code_challenge = searchParams.get("code_challenge") || "";
   const code_challenge_method = searchParams.get("code_challenge_method") || "";
+  const redirect_uri = searchParams.get("redirect_uri") || "";
 
   if (!clientId || !clientSecret) {
     return NextResponse.json(
@@ -41,22 +42,17 @@ export async function GET(request: NextRequest) {
   cookies().set("expandApiKey", expandApiKey, { httpOnly: true, secure: true });
   cookies().set("tableName", tableName, { httpOnly: true, secure: true });
   cookies().set("exchangeBase", exchangeBase, { httpOnly: true, secure: true });
+  cookies().set("redirect_uri", redirect_uri, { httpOnly: true, secure: true });
 
   const authUrl = new URL(loginBase);
   authUrl.searchParams.append("response_type", "code");
   authUrl.searchParams.append("client_id", clientId);
-  authUrl.searchParams.append(
-    "redirect_uri",
-    `${process.env.NEXT_PUBLIC_DEFAULT_SITE_URL}/api/oauth2/callback`,
-  );
-  console.log("HELP ME check if redirect_uri is correct");
-  console.log("redirect_uri", `${process.env.NEXT_PUBLIC_DEFAULT_SITE_URL}/api/oauth2/callback`);
+  authUrl.searchParams.append("redirect_uri", redirect_uri);
   authUrl.searchParams.append("scope", scope);
   authUrl.searchParams.append("state", state);
   authUrl.searchParams.append("access_type", "offline");
   authUrl.searchParams.append("prompt", "consent");
   authUrl.searchParams.append("code_challenge", code_challenge);
   authUrl.searchParams.append("code_challenge_method", code_challenge_method);
-  console.log(authUrl);
   return NextResponse.redirect(authUrl);
 }
