@@ -57,7 +57,7 @@ export default function RoutingAuthDialogContent({
         <XAuthDialogContent
           apiKey={apiKey}
           loginBase="https://twitter.com/i/oauth2/authorize"
-          exchangeBase="https://api.twitter.com/oauth/access_token"
+          exchangeBase="https://api.x.com/2/oauth2/token"
         />
       );
       break;

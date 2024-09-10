@@ -43,6 +43,7 @@ export async function GET(request: Request) {
       `${process.env.NEXT_PUBLIC_DEFAULT_SITE_URL}/api/oauth2/callback`,
     );
     params.append("grant_type", "authorization_code");
+    params.append("code_verifier", "challenge");
     const response = await axios.post(storedExchangeBase, params, {
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",

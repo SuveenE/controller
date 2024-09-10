@@ -64,24 +64,8 @@ export default function AuthDialogContent({
   };
 
   useEffect(() => {
-    const generateCodeChallenge = (verifier: string) => {
-      return createHash("sha256")
-        .update(verifier)
-        .digest("base64")
-        .replace(/\+/g, "-")
-        .replace(/\//g, "_")
-        .replace(/=+$/, ""); // Make it URL-safe
-    };
-
-    const codeVerifier: string = randomBytes(32)
-      .toString("base64")
-      .replace(/\+/g, "-")
-      .replace(/\//g, "_")
-      .replace(/=+$/, ""); // Make it URL-safe
-    const codeChallenge: string = generateCodeChallenge(codeVerifier);
-
     setOauthUrl(
-      `/api/oauth2/login?clientId=${encodeURIComponent(clientId)}&clientSecret=${encodeURIComponent(clientSecret)}&scope=${encodeURIComponent(scope)}&expandApiKey=${encodeURIComponent(apiKey)}&tableName=${encodeURIComponent(name.toLowerCase())}&loginBase=${encodeURIComponent(loginBase)}&exchangeBase=${encodeURIComponent(exchangeBase)}&code_challenge=${encodeURIComponent(codeChallenge)}&code_challenge_method=S256`,
+      `/api/oauth2/login?clientId=${encodeURIComponent(clientId)}&clientSecret=${encodeURIComponent(clientSecret)}&scope=${encodeURIComponent(scope)}&expandApiKey=${encodeURIComponent(apiKey)}&tableName=${encodeURIComponent(name.toLowerCase())}&loginBase=${encodeURIComponent(loginBase)}&exchangeBase=${encodeURIComponent(exchangeBase)}&code_challenge=challenge&code_challenge_method=plain `,
     );
   }, [clientId, clientSecret, apiKey, scope, name, loginBase, exchangeBase]);
 
