@@ -49,6 +49,8 @@ export async function GET(request: NextRequest) {
     "redirect_uri",
     `${process.env.NEXT_PUBLIC_DEFAULT_SITE_URL}/api/oauth2/callback`,
   );
+  console.log("HELP ME");
+  console.log("redirect_uri", `${process.env.NEXT_PUBLIC_DEFAULT_SITE_URL}/api/oauth2/callback`);
   authUrl.searchParams.append("scope", scope);
   authUrl.searchParams.append("state", state);
   authUrl.searchParams.append("access_type", "offline");

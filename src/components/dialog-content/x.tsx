@@ -12,7 +12,8 @@ export default function XAuthDialogContent({
       apiKey={apiKey}
       loginBase={loginBase}
       exchangeBase={exchangeBase}
-      scope="tweet.read,tweet.write,users.read,follows.read,follows.write,offline.access"
+      // scope="tweet.read,tweet.write,users.read,follows.read,follows.write,offline.access"
+      scope="tweet.read"
     />
   );
 }
