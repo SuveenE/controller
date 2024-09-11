@@ -67,9 +67,35 @@ export default function AuthDialogContent({
     // setOauthUrl(
     //   `/api/oauth2/login?clientId=${encodeURIComponent(clientId)}&clientSecret=${encodeURIComponent(clientSecret)}&scope=${encodeURIComponent(scope)}&expandApiKey=${encodeURIComponent(apiKey)}&tableName=${encodeURIComponent(name.toLowerCase())}&loginBase=${encodeURIComponent(loginBase)}&exchangeBase=${encodeURIComponent(exchangeBase)}&redirect_uri=${encodeURIComponent(`${process.env.NEXT_PUBLIC_DEFAULT_SITE_URL}/api/oauth2/callback`)}&code_challenge=challenge&code_challenge_method=plain`,
     // );
-    setOauthUrl(
-      `/api/oauth2/login?clientId=${clientId}&clientSecret=${clientSecret}&scope=${scope}&expandApiKey=${apiKey}&tableName=${name.toLowerCase()}&loginBase=${loginBase}&exchangeBase=${exchangeBase}&redirect_uri=${`${process.env.NEXT_PUBLIC_DEFAULT_SITE_URL}/api/oauth2/callback`}&code_challenge=challenge&code_challenge_method=plain`,
-    );
+
+    function generateRandomString(length: number): string {
+      const array = new Uint8Array(length);
+      crypto.getRandomValues(array);
+      return Array.from(array, (byte) => byte.toString(16).padStart(2, '0')).join('');
+    }
+    
+    async function sha256(plain: string): Promise<ArrayBuffer> {
+      const encoder = new TextEncoder();
+      const encrypted = encoder.encode(plain);
+      return await crypto.subtle.digest('SHA-256', encrypted);
+    }
+
+    function base64UrlEncode(buffer: ArrayBuffer): string {
+      const bytes = new Uint8Array(buffer);
+      let binary = '';
+      for (let i = 0; i < bytes.byteLength; i++) {
+        binary += String.fromCharCode(bytes[i]);
+      }
+      return btoa(binary).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+    }
+
+    const codeVerifier = generateRandomString(128);
+    sha256(codeVerifier).then((hash) => {
+      const codeChallenge = base64UrlEncode(hash);
+      setOauthUrl(
+        `/api/oauth2/login?clientId=${clientId}&clientSecret=${clientSecret}&scope=${scope}&expandApiKey=${apiKey}&tableName=${name.toLowerCase()}&loginBase=${loginBase}&exchangeBase=${exchangeBase}&redirect_uri=${`${process.env.NEXT_PUBLIC_DEFAULT_SITE_URL}/api/oauth2/callback`}&code_verifier=${codeVerifier}&code_challenge=${codeChallenge}&code_challenge_method=S256`,
+      );
+    });
   }, [clientId, clientSecret, apiKey, scope, name, loginBase, exchangeBase]);
 
   const isButtonVisible = clientId !== "" && clientSecret !== "";

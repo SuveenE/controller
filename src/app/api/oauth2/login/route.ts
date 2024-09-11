@@ -24,6 +24,7 @@ export async function GET(request: NextRequest) {
   // We need to know which is the base url of the specific integration we are initiating token exchange with
   const exchangeBase = searchParams.get("exchangeBase") || "";
 
+  const code_verifier = searchParams.get("code_verifier") || "";
   const code_challenge = searchParams.get("code_challenge") || "";
   const code_challenge_method = searchParams.get("code_challenge_method") || "";
   const redirect_uri = searchParams.get("redirect_uri") || "";
@@ -43,6 +44,8 @@ export async function GET(request: NextRequest) {
   cookies().set("tableName", tableName, { httpOnly: true, secure: true });
   cookies().set("exchangeBase", exchangeBase, { httpOnly: true, secure: true });
   cookies().set("redirect_uri", redirect_uri, { httpOnly: true, secure: true });
+  cookies().set("code_challenge", code_challenge, { httpOnly: true, secure: true });
+  cookies().set("code_verifier", code_verifier, { httpOnly: true, secure: true });
 
   const authUrl = new URL(loginBase);
   authUrl.searchParams.append("response_type", "code");
