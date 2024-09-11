@@ -14,7 +14,6 @@ import { tokenGetRequestSchema } from "@/types/actions/token";
 import { isUserAuthenticated } from "@/actions/token";
 import { queryClient } from "@/components/shared/query-provider";
 import { INTEGRATION_AUTH_STATUS_QUERY_KEY } from "@/constants/keys";
-import { randomBytes, createHash } from "crypto";
 
 const BASE_URL = process.env.NEXT_PUBLIC_DEFAULT_SITE_URL;
 
@@ -24,6 +23,7 @@ type AuthDialogContentProps = {
   loginBase: string;
   exchangeBase: string;
   scope: string;
+  verifierRequired?: boolean;
 };
 
 export default function AuthDialogContent({
@@ -32,6 +32,7 @@ export default function AuthDialogContent({
   loginBase,
   exchangeBase,
   scope,
+  verifierRequired = true,
 }: AuthDialogContentProps) {
   const router = useRouter();
   const [oauthRedirectUrl] = useState<string>(
@@ -93,7 +94,7 @@ export default function AuthDialogContent({
     sha256(codeVerifier).then((hash) => {
       const codeChallenge = base64UrlEncode(hash);
       setOauthUrl(
-        `/api/oauth2/login?clientId=${clientId}&clientSecret=${clientSecret}&scope=${scope}&expandApiKey=${apiKey}&tableName=${name.toLowerCase()}&loginBase=${loginBase}&exchangeBase=${exchangeBase}&redirect_uri=${`${process.env.NEXT_PUBLIC_DEFAULT_SITE_URL}/api/oauth2/callback`}&code_verifier=${codeVerifier}&code_challenge=${codeChallenge}&code_challenge_method=S256`,
+        `/api/oauth2/login?clientId=${clientId}&clientSecret=${clientSecret}&scope=${scope}&expandApiKey=${apiKey}&tableName=${name.toLowerCase()}&loginBase=${loginBase}&exchangeBase=${exchangeBase}&redirect_uri=${`${process.env.NEXT_PUBLIC_DEFAULT_SITE_URL}/api/oauth2/callback`}&code_verifier=${codeVerifier}&code_challenge=${codeChallenge}&code_challenge_method=S256&verifierRequired=${verifierRequired}`,
       );
     });
   }, [clientId, clientSecret, apiKey, scope, name, loginBase, exchangeBase]);

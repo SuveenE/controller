@@ -28,6 +28,7 @@ export async function GET(request: NextRequest) {
   const code_challenge = searchParams.get("code_challenge") || "";
   const code_challenge_method = searchParams.get("code_challenge_method") || "";
   const redirect_uri = searchParams.get("redirect_uri") || "";
+  const verifierRequired = searchParams.get("verifierRequired") || "";
 
   if (!clientId || !clientSecret) {
     return NextResponse.json(
@@ -46,6 +47,7 @@ export async function GET(request: NextRequest) {
   cookies().set("redirect_uri", redirect_uri, { httpOnly: true, secure: true });
   cookies().set("code_challenge", code_challenge, { httpOnly: true, secure: true });
   cookies().set("code_verifier", code_verifier, { httpOnly: true, secure: true });
+  cookies().set("verifierRequired", verifierRequired, { httpOnly: true, secure: true });
 
   const authUrl = new URL(loginBase);
   authUrl.searchParams.append("response_type", "code");

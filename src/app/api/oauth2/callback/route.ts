@@ -15,6 +15,7 @@ export async function GET(request: Request) {
   const storedTableName = cookies().get("tableName")?.value;
   const storedRedirectUri = cookies().get("redirect_uri")?.value;
   const storedCodeVerifier = cookies().get("code_verifier")?.value;
+  const storedVerifierRequired = cookies().get("verifierRequired")?.value;
 
   if (!state || state !== storedState) {
     return NextResponse.json(
@@ -37,11 +38,26 @@ export async function GET(request: Request) {
   try {
     const params = new URLSearchParams();
 
+    // params.append("client_id", storedClientId as string);
+    // params.append("client_secret", storedClientSecret as string);
+    // params.append("code", code);
+    // params.append("redirect_uri", storedRedirectUri as string);
+    // params.append("grant_type", "authorization_code");
+    // params.append("code_verifier", "challenge");
+
+    // const response = await axios.post(storedExchangeBase, params, {
+    //   headers: {
+    //     "Content-Type": "application/x-www-form-urlencoded",
+    //   },
+    // });
+
     params.append("code", code);
     params.append("redirect_uri", storedRedirectUri as string);
     params.append("grant_type", "authorization_code");
-    params.append("code_verifier", storedCodeVerifier as string);
-
+    if (storedVerifierRequired === "true") {
+      params.append("code_verifier", storedCodeVerifier as string);
+    }
+    
     // Base64 encode the client_id:client_secret
     const credentials = btoa(`${storedClientId}:${storedClientSecret}`);
 
