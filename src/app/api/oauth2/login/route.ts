@@ -23,7 +23,7 @@ export async function GET(request: NextRequest) {
 
   // We need to know which is the base url of the specific integration we are initiating token exchange with
   const exchangeBase = searchParams.get("exchangeBase") || "";
-
+  
   const code_challenge = searchParams.get("code_challenge") || "";
   const code_challenge_method = searchParams.get("code_challenge_method") || "";
   const redirect_uri = searchParams.get("redirect_uri") || "";
@@ -54,7 +54,12 @@ export async function GET(request: NextRequest) {
   authUrl.searchParams.append("prompt", "consent");
   authUrl.searchParams.append("code_challenge", code_challenge);
   authUrl.searchParams.append("code_challenge_method", code_challenge_method);
-  console.log(authUrl);
-  return NextResponse.redirect('https://twitter.com/i/oauth2/authorize?response_type=code&client_id=aW0tWnUzbXpwMEFtYTI5bTh6TkY6MTpjaQ&redirect_uri=https%3A%2F%2Fexpand-frontend.vercel.app%2Fapi%2Foauth2%2Fcallback&scope=tweet.read&state=state&access_type=offline&prompt=consent&code_challenge=challenge&code_challenge_method=plain');
+  
+  const formattedAuthUrl = authUrl.toString().replace(/\+/g, '%20');
+
+
+  console.log(formattedAuthUrl);
+  return NextResponse.redirect(formattedAuthUrl);
+  // return NextResponse.redirect('https://twitter.com/i/oauth2/authorize?response_type=code&client_id=aW0tWnUzbXpwMEFtYTI5bTh6TkY6MTpjaQ&redirect_uri=https%3A%2F%2Fexpand-frontend.vercel.app%2Fapi%2Foauth2%2Fcallback&scope=tweet.read%20users.read%20follows.read+follows.write%20offline.access&state=18f0ba4c-0d3f-4e0b-8236-eae74186043d&access_type=offline&prompt=consent&code_challenge=challenge&code_challenge_method=plain');
   // return NextResponse.redirect("https://twitter.com/i/oauth2/authorize?response_type=code&client_id=cFo1S1g4azUweVJzWFBBcEx1LVE6MTpjaQ&redirect_uri=https%3A%2F%2Fvotacionya.000webhostapp.com%2Fcallback%2Flogintwitter.php&scope=tweet.read&state=state&code_challenge=challenge&code_challenge_method=plain");
 }
