@@ -1,5 +1,5 @@
 import { AuthParamProps } from "@/types/integration";
-import AuthDialogContent from "@/components/dialog-content/auth-base";
+import AuthDialogContent from "@/components/dialog-content/auth";
 
 export default function GoogleCalendarAuthDialogContent({
   apiKey,
