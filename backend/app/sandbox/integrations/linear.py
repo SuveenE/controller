@@ -5,7 +5,15 @@ from dotenv import load_dotenv
 from app.connectors.client.linear import LinearClient
 from app.models.agents.base.template import AgentResponse
 from app.models.agents.linear import LINEAR_TRIAGE_AGENT
-from app.models.integrations.linear import Label, Labels, Status, LinearCreateIssueRequest, LinearDeleteIssuesRequest, LinearGetIssuesRequest, LinearUpdateIssuesRequest
+from app.models.integrations.linear import (
+    Label,
+    Labels,
+    LinearCreateIssueRequest,
+    LinearDeleteIssuesRequest,
+    LinearGetIssuesRequest,
+    LinearUpdateIssuesRequest,
+    Status,
+)
 from app.models.query import Message, Role
 
 load_dotenv()
