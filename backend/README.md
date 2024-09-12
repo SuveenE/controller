@@ -46,7 +46,7 @@ uvicorn app.main:app --reload --host 0.0.0.0 --port 8080
 ### Start the server (on ec2)
 
 ```
-uvicorn app.main:app --reload --host 0.0.0.0 --port 8080 --ssl-keyfile ~/expand-backend/privkey.pem --ssl-certfile ~/expand-backend/fullchain.pem
+uvicorn app.main:app --reload --host 0.0.0.0 --port 8080 --ssl-keyfile ~/controller-prod/backend/privkey.pem --ssl-certfile ~/controller-prod/backend/fullchain.pem
 ```
 
 ### Check style
