@@ -57,19 +57,19 @@ export async function GET(request: Request) {
     if (storedVerifierRequired === "true") {
       params.append("code_verifier", storedCodeVerifier as string);
     }
-    
+
     // Base64 encode the client_id:client_secret
     const credentials = btoa(`${storedClientId}:${storedClientSecret}`);
 
     const response = await axios.post(storedExchangeBase, params, {
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",
-        "Authorization": `Basic ${credentials}`
+        Authorization: `Basic ${credentials}`,
       },
     });
 
-    console.log("RESPONSE")
-    console.log(response)
+    console.log("RESPONSE");
+    console.log(response);
 
     const tokenData = response.data;
     const accessToken: string = tokenData.access_token;
@@ -95,19 +95,22 @@ export async function GET(request: Request) {
       parsedTokenRequest,
     );
 
-    console.log("BACKEND REQUEST COMPLETED")
+    console.log("BACKEND REQUEST COMPLETED");
 
     return NextResponse.redirect(`${process.env.NEXT_PUBLIC_DEFAULT_SITE_URL}`);
   } catch (error) {
     if (axios.isAxiosError(error)) {
-      console.error("Token exchange error:", error.response?.data || error.message);
+      console.error(
+        "Token exchange error:",
+        error.response?.data || error.message,
+      );
     } else {
       console.error("Token exchange error:", error);
     }
 
     return NextResponse.json(
       { error: "Failed to retrieve access token" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

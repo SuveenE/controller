@@ -72,22 +72,27 @@ export default function AuthDialogContent({
     function generateRandomString(length: number): string {
       const array = new Uint8Array(length);
       crypto.getRandomValues(array);
-      return Array.from(array, (byte) => byte.toString(16).padStart(2, '0')).join('');
+      return Array.from(array, (byte) =>
+        byte.toString(16).padStart(2, "0"),
+      ).join("");
     }
-    
+
     async function sha256(plain: string): Promise<ArrayBuffer> {
       const encoder = new TextEncoder();
       const encrypted = encoder.encode(plain);
-      return await crypto.subtle.digest('SHA-256', encrypted);
+      return await crypto.subtle.digest("SHA-256", encrypted);
     }
 
     function base64UrlEncode(buffer: ArrayBuffer): string {
       const bytes = new Uint8Array(buffer);
-      let binary = '';
+      let binary = "";
       for (let i = 0; i < bytes.byteLength; i++) {
         binary += String.fromCharCode(bytes[i]);
       }
-      return btoa(binary).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+      return btoa(binary)
+        .replace(/\+/g, "-")
+        .replace(/\//g, "_")
+        .replace(/=+$/, "");
     }
 
     const codeVerifier = generateRandomString(128);

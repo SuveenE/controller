@@ -45,9 +45,18 @@ export async function GET(request: NextRequest) {
   cookies().set("tableName", tableName, { httpOnly: true, secure: true });
   cookies().set("exchangeBase", exchangeBase, { httpOnly: true, secure: true });
   cookies().set("redirect_uri", redirect_uri, { httpOnly: true, secure: true });
-  cookies().set("code_challenge", code_challenge, { httpOnly: true, secure: true });
-  cookies().set("code_verifier", code_verifier, { httpOnly: true, secure: true });
-  cookies().set("verifierRequired", verifierRequired, { httpOnly: true, secure: true });
+  cookies().set("code_challenge", code_challenge, {
+    httpOnly: true,
+    secure: true,
+  });
+  cookies().set("code_verifier", code_verifier, {
+    httpOnly: true,
+    secure: true,
+  });
+  cookies().set("verifierRequired", verifierRequired, {
+    httpOnly: true,
+    secure: true,
+  });
 
   const authUrl = new URL(loginBase);
   authUrl.searchParams.append("response_type", "code");
@@ -59,9 +68,9 @@ export async function GET(request: NextRequest) {
   authUrl.searchParams.append("prompt", "consent");
   authUrl.searchParams.append("code_challenge", code_challenge);
   authUrl.searchParams.append("code_challenge_method", code_challenge_method);
-  
+
   // VERY IMPORTANT: Replace all '+' with '%20' in the authUrl
-  const formattedAuthUrl = authUrl.toString().replace(/\+/g, '%20');
+  const formattedAuthUrl = authUrl.toString().replace(/\+/g, "%20");
 
   return NextResponse.redirect(formattedAuthUrl);
 }
