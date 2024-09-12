@@ -20,12 +20,12 @@ export default function Navigation() {
       >
         Chat
       </Link> */}
-      {/* <Link
+      <Link
         href={ROUTE.docs}
         className={`px-3 py-2 rounded-md text-sm font-medium ${pathname === "/docs" ? "bg-black dark:bg-white text-white dark:text-black" : "text-black-300 hover:bg-gray-700 hover:text-white"}`}
       >
         Docs
-      </Link> */}
+      </Link>
     </nav>
   );
 }
