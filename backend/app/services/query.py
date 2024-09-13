@@ -42,7 +42,15 @@ class QueryService:
                 )
             tokens[integration] = token
         chat_history.append(message)
-        agent_chat_history: list[Message] = chat_history.copy()
+        agent_chat_history: list[Message] = []
+        for msg in chat_history:
+            agent_chat_history.append(
+                Message(
+                    role=Role.ASSISTANT,
+                    content=f"{msg.content}: {str(msg.data)}",
+                    data=None,
+                )
+            )
         response = AgentResponse(agent=MAIN_TRIAGE_AGENT, message=message)
         while response.agent:
             prev_agent: Agent = response.agent

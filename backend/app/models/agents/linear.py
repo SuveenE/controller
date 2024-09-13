@@ -230,7 +230,7 @@ LINEAR_UPDATE_REQUEST_AGENT = LinearUpdateRequestAgent(
     model=OPENAI_GPT4O_MINI,
     system_prompt="""You are an expert at updating information in linear. Your task is to help a user update information by supplying the correct request to the linear API. Follow the rules below:
 
-1. Prioritise using the id as the filter condition where possible. Look through the chat history carefully to find the correct id.
+1. Prioritise using the id as the filter condition where possible.
 2. Be careful not to mix up the "number" and "id" of the issue. The "id" is an uuid but the "number" is an integer.
 3. Be as restrictive as possible when filtering for the issues to update, which means you should provide as many filter conditions as possible.     
 4. Set use_and_clause to True if all filter conditions must be met, and False if meeting any single condition is sufficient.""",

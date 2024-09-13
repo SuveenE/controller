@@ -45,6 +45,9 @@ export default function HomePage() {
     refetchOnWindowFocus: true,
   });
   const [chatHistory, setChatHistory] = useState<Message[]>([]);
+  const updateChatHistory = (newChatHistory: Message[]) => {
+    setChatHistory(newChatHistory);
+  }
   const [instance, setInstance] = useState<string | null>(null);
   const sendMessage = useMutation({
     mutationFn: async (inputText: string): Promise<Message[]> => {
@@ -202,6 +205,7 @@ export default function HomePage() {
             profileImageUrl={profileImageUrl}
             fallbackCharacter={user?.firstName?.charAt(0) || "U"}
             isResponseFetching={sendMessage.status === "pending"}
+            updateChatHistory={updateChatHistory}
           />
         </ScrollArea>
         <div className="flex mt-5 space-x-2 items-end relative">

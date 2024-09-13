@@ -12,12 +12,14 @@ import {
 import ReactMarkdown from "react-markdown";
 import Loader from "react-loaders";
 import "loaders.css/src/animations/ball-pulse.scss";
+import { Button } from "@/components/ui/button";
 
 type ChatContainerProps = {
   chatHistory: Message[];
   profileImageUrl: string;
   fallbackCharacter: string;
   isResponseFetching: boolean;
+  updateChatHistory: (newChatHistory: Message[]) => void;
 };
 
 export default function ChatContainer({
@@ -25,10 +27,17 @@ export default function ChatContainer({
   profileImageUrl,
   fallbackCharacter,
   isResponseFetching,
+  updateChatHistory
 }: ChatContainerProps) {
+
+  const handleDelete = (index: number) => {
+    updateChatHistory(chatHistory.filter((_, i) => i < index));
+  };
+
   return (
     <div>
       {chatHistory.map((message: Message, index: number) => (
+        // eslint-disable-next-line react/no-array-index-key
         <div key={index}>
           <div
             className={`flex items-start mb-4 ${
@@ -44,12 +53,21 @@ export default function ChatContainer({
               </Avatar>
             )}
             <div
-              className={`p-2 rounded-lg ${
+              className={`relative p-4 rounded-lg ${
                 message.role === roleSchema.Values.user
                   ? "bg-blue-500 dark:bg-blue-800 text-white"
                   : "bg-gray-300 dark:bg-gray-400 text-black"
               }`}
             >
+              {
+                message.role === roleSchema.Values.user && 
+                <Button
+                  className="absolute top-2 right-2 bg-transparent border-none p-0 size-2 text-white hover:bg-transparent"
+                  onClick={() => handleDelete(index)}
+                >
+                  x
+                </Button>
+              }
               <ReactMarkdown
                 components={{
                   a: ({ node, ...props }) => (
