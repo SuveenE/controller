@@ -135,7 +135,7 @@ class LinearGetRequestAgent(Agent):
                             agent=SUMMARY_AGENT,
                             message=Message(
                                 role=Role.ASSISTANT,
-                                content="No issues were retrieved. Please check the message history to advise the user on what might be the cause of the problem. It could be an issue with spelling or capitalization.",
+                                content="No Linear issues were retrieved. Please check the message history to advise the user on what might be the cause of the problem. It could be an issue with spelling or capitalization.",
                                 error=True,
                             ),
                         )
@@ -143,7 +143,7 @@ class LinearGetRequestAgent(Agent):
                         agent=MAIN_TRIAGE_AGENT,
                         message=Message(
                             role=Role.ASSISTANT,
-                            content="Here are the retrieved issues",
+                            content="Here are the retrieved Linear issues",
                             data=[issue.model_dump() for issue in retrieved_issues],
                         ),
                     )
@@ -180,6 +180,8 @@ class LinearUpdateRequestAgent(Agent):
         client_id: Optional[str],
         client_secret: Optional[str],
     ) -> AgentResponse:
+        print("CHAT HISTORY")
+        print(chat_history)
         response, function_name = self.get_response(chat_history=chat_history)
         if not function_name:
             log.info(
@@ -205,7 +207,7 @@ class LinearUpdateRequestAgent(Agent):
                         agent=SUMMARY_AGENT,
                         message=Message(
                             role=Role.ASSISTANT,
-                            content="No issues were updated. Please check the message history and advise the user on what might be the cause of the problem. It could be an issue with spelling or capitalization.",
+                            content="No Linear issues were updated. Please check the message history and advise the user on what might be the cause of the problem. It could be an issue with spelling or capitalization.",
                             error=True,
                         ),
                     )
@@ -213,7 +215,7 @@ class LinearUpdateRequestAgent(Agent):
                     agent=MAIN_TRIAGE_AGENT,
                     message=Message(
                         role=Role.ASSISTANT,
-                        content=f"Here are the updated issues",
+                        content=f"Here are the updated Linear issues",
                         data=[issue.model_dump() for issue in updated_issues],
                     ),
                 )
@@ -228,7 +230,7 @@ LINEAR_UPDATE_REQUEST_AGENT = LinearUpdateRequestAgent(
     model=OPENAI_GPT4O_MINI,
     system_prompt="""You are an expert at updating information in linear. Your task is to help a user update information by supplying the correct request to the linear API. Follow the rules below:
 
-1. Prioritise using the id as the filter condition where possible.
+1. Prioritise using the id as the filter condition where possible. Look through the chat history carefully to find the correct id.
 2. Be careful not to mix up the "number" and "id" of the issue. The "id" is an uuid but the "number" is an integer.
 3. Be as restrictive as possible when filtering for the issues to update, which means you should provide as many filter conditions as possible.     
 4. Set use_and_clause to True if all filter conditions must be met, and False if meeting any single condition is sufficient.""",
@@ -272,7 +274,7 @@ class LinearDeleteRequestAgent(Agent):
                         agent=SUMMARY_AGENT,
                         message=Message(
                             role=Role.ASSISTANT,
-                            content="No issues were deleted. Please check the message history and advise the user on what might be the cause of the problem. It could be an issue with spelling or capitalization.",
+                            content="No Linear issues were deleted. Please check the message history and advise the user on what might be the cause of the problem. It could be an issue with spelling or capitalization.",
                             error=True,
                         ),
                     )
@@ -280,7 +282,7 @@ class LinearDeleteRequestAgent(Agent):
                     agent=MAIN_TRIAGE_AGENT,
                     message=Message(
                         role=Role.ASSISTANT,
-                        content="Here are the deleted issues",
+                        content="Here are the deleted Linear issues",
                         data=[issue.model_dump() for issue in deleted_issues],
                     ),
                 )
