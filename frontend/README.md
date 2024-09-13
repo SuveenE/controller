@@ -26,3 +26,13 @@ bun dev
 npm install -g localtunnel
 lt --port 3000
 ```
+
+## Dockerfile - Building and running the docker image
+
+```
+#Build the docker image
+docker build --no-cache -t frontend -f docker/development/Dockerfile .
+
+#Run the docker image
+docker run -it -p 3000:3000 --env-file .env frontend
+```

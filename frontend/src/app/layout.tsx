@@ -22,9 +22,9 @@ const PostHogPageView = dynamic(() => import("@/app/PostHogPageView"), {
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Expand",
+  title: "Controller",
   description:
-    "Expand seeks to build application connectors powered by natural language inputs.",
+    "Controller seeks to build application connectors powered by natural language inputs.",
 };
 
 export default function RootLayout({

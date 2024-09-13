@@ -48,3 +48,14 @@ uvicorn app.main:app --reload --host 0.0.0.0 --port 8080
 Run the following command at the root of `backend` directory
 `black .`
 `isort .`
+
+
+## Dockerfile - Building and running the docker image
+
+```
+#Build the docker image
+docker build --no-cache -t backend -f docker/development/Dockerfile .
+
+#Run the docker image
+docker run -it -p 8080:8080 --env-file .env backend
+```
