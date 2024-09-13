@@ -2,7 +2,7 @@
 
 ## Install Poetry
 
-We use [Poetry](https://python-poetry.org/) for dependency management.
+Use [Poetry](https://python-poetry.org/) for dependency management.
 
 ```bash
 # Install Poetry
@@ -43,13 +43,8 @@ cp .env.example .env
 uvicorn app.main:app --reload --host 0.0.0.0 --port 8080
 ```
 
-### Start the server (on ec2)
-
-```
-uvicorn app.main:app --reload --host 0.0.0.0 --port 8080 --ssl-keyfile ~/controller-prod/backend/privkey.pem --ssl-certfile ~/controller-prod/backend/fullchain.pem
-```
-
 ### Check style
 
-Run the following command at the root of the repository
+Run the following command at the root of `backend` directory
 `black .`
+`isort .`
