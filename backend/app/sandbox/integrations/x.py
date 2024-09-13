@@ -2,26 +2,30 @@ import os
 
 from dotenv import load_dotenv
 
-from app.connectors.client.slack import SlackClient
-from app.models.agents.base.template import Agent, AgentResponse
-from app.models.agents.base.triage import TriageAgent
-from app.models.agents.main import MAIN_TRIAGE_AGENT
-from app.models.integrations.slack import (
-    SlackGetChannelIdRequest,
-    SlackSendMessageRequest,
-)
+from app.connectors.client.x import XClient
+# from app.models.agents.base.template import Agent, AgentResponse
+# from app.models.agents.base.triage import TriageAgent
+# from app.models.agents.main import MAIN_TRIAGE_AGENT
+# from app.models.integrations.slack import (
+#     SlackGetChannelIdRequest,
+#     SlackSendMessageRequest,
+# )
 from app.models.query import Message, Role
-from backend.app.connectors.client.x import XClient
 
 load_dotenv()
 
-SLACK_ACCESS_TOKEN = os.getenv("SLACK_ACCESS_TOKEN")
-client = SlackClient(access_token=SLACK_ACCESS_TOKEN)
+X_CLIENT_ID = os.getenv("X_CLIENT_ID")
+X_CLIENT_SECRET = os.getenv("X_CLIENT_SECRET")
+X_ACCESS_TOKEN = os.getenv("X_ACCESS_TOKEN")
+
+client=XClient(access_token=X_ACCESS_TOKEN)
 
 
 def main():
     # HARD CODE TEST
-    client=XClient(client_id="client_id", client_secret="client_secret", access_token="access_token")
+    # client.create_tweet("happy")
+    client.get_tweets_past_hour()
+    
 
     ## AGENT TEST
     # chat_history: list[Message] = []
