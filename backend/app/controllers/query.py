@@ -4,7 +4,6 @@ from fastapi import APIRouter, HTTPException
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel, ValidationError
 
-from app.models.integrations.base import Integration
 from app.models.query import QueryRequest, QueryResponse
 from app.services.query import QueryService
 
