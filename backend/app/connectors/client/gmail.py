@@ -7,6 +7,7 @@ from googleapiclient.discovery import build
 from app.exceptions.exception import InferenceError
 from app.models.integrations.gmail import (
     Gmail,
+    GmailFilterEmailsRequest,
     GmailGetEmailsRequest,
     GmailSendEmailRequest,
     MarkAsReadRequest,
@@ -63,33 +64,36 @@ class GmailClient:
             updated_emails.append(email)
         return updated_emails
 
-    def get_emails(self, request: GmailGetEmailsRequest) -> list[Gmail]:
+    def get_emails(self, request: GmailFilterEmailsRequest) -> list[Gmail]:
         try:
-            # Specific id query
-            if request.query.startswith("id:"):
-                message_id = request.query.split(":")[-1].strip()
-                full_msg = (
-                    self.service.users()
-                    .messages()
-                    .get(userId="me", id=message_id)
-                    .execute()
-                )
-                
-                headers = full_msg["payload"]["headers"]
-                return [Gmail(
-                    id=full_msg["id"],
-                    labelIds=full_msg["labelIds"],
-                    sender=next(
-                        (header["value"] for header in headers if header["name"].lower() == "from"),
-                        "",
-                    ),
-                    subject=next(
-                        (header["value"] for header in headers if header["name"].lower() == "subject"),
-                        "",
-                    ),
-                    body=_get_message_body(full_msg["payload"]),
-                )]
-            else:
+            gmail_lst: list[Gmail] = []
+            
+            if request.message_ids:
+                for message_id in request.message_ids:
+                    full_msg = (
+                        self.service.users()
+                        .messages()
+                        .get(userId="me", id=message_id)
+                        .execute()
+                    )
+                    
+                    headers = full_msg["payload"]["headers"]
+                    gmail_lst.append(
+                        Gmail(
+                            id=full_msg["id"],
+                            labelIds=full_msg["labelIds"],
+                            sender=next(
+                                (header["value"] for header in headers if header["name"].lower() == "from"),
+                                "",
+                            ),
+                            subject=next(
+                                (header["value"] for header in headers if header["name"].lower() == "subject"),
+                                "",
+                            ),
+                            body=_get_message_body(full_msg["payload"]),
+                        )
+                    )
+            elif request.query:
                 messages = (
                     self.service.users()
                     .messages()
@@ -97,7 +101,6 @@ class GmailClient:
                     .execute()
                 )
                 
-                gmail_lst: list[Gmail] = []
                 for message in messages.get("messages", []):
                     full_msg = (
                         self.service.users()
@@ -122,7 +125,7 @@ class GmailClient:
                             body=_get_message_body(full_msg["payload"]),
                         )
                     )
-                return gmail_lst
+            return gmail_lst
         except Exception as e:
             print(f"Error getting emails via GmailClient: {e}")  # Print the error for debugging
             raise InferenceError(f"Error getting emails via GmailClient: {e}")

@@ -1,6 +1,6 @@
 from typing import Optional
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field, model_validator, root_validator
 
 
 class Gmail(BaseModel):
@@ -16,7 +16,15 @@ class GmailEditableFields(BaseModel):
 
 
 class GmailFilterEmailsRequest(BaseModel):
-    query: str
+    message_ids: Optional[list[str]] = Field(description="List of message ids to filter emails with, if any")
+    query: Optional[str] = Field(description="Query to filter emails with, if message ids are unavailable")
+    
+    @model_validator(mode="after")
+    def check_at_least_one(self):
+        if not self.message_ids and not self.query:
+            raise ValueError('At least one of message_ids or query must be provided')
+        
+        return self
 
 
 class GmailGetEmailsRequest(GmailFilterEmailsRequest):
