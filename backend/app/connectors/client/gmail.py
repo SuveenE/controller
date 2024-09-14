@@ -7,6 +7,7 @@ from googleapiclient.discovery import build
 from app.exceptions.exception import InferenceError
 from app.models.integrations.gmail import (
     Gmail,
+    GmailDeleteEmailsRequest,
     GmailFilterEmailsRequest,
     GmailGetEmailsRequest,
     GmailSendEmailRequest,
@@ -33,7 +34,7 @@ class GmailClient:
             ),
         )
 
-    def send_email(self, request: GmailSendEmailRequest):
+    def send_email(self, request: GmailSendEmailRequest) -> Gmail:
         try:
             message = MIMEText(request.body)
             message["to"] = request.recipient
@@ -42,12 +43,17 @@ class GmailClient:
                 "raw": base64.urlsafe_b64encode(message.as_bytes()).decode()
             }
 
-            self.service.users().messages().send(
+            sent_message = self.service.users().messages().send(
                 userId="me", body=create_message
             ).execute()
 
-            # TODO: Can return email id too
-            return "Email sent successfully"
+            return Gmail(
+                id=sent_message["id"],
+                labelIds=sent_message["labelIds"],
+                sender=sent_message["payload"]["headers"]["From"],
+                subject=request.subject,
+                body=request.body,
+            )
         except Exception as e:
             raise InferenceError("Error sending email via GmailClient: %s", str(e))
 
@@ -129,6 +135,25 @@ class GmailClient:
         except Exception as e:
             print(f"Error getting emails via GmailClient: {e}")  # Print the error for debugging
             raise InferenceError(f"Error getting emails via GmailClient: {e}")
+        
+    def delete_emails(self, request: GmailDeleteEmailsRequest) -> list[Gmail]:
+        try:
+            gmail_lst: list[Gmail] = self.get_emails(request=request)
+            if request.message_ids:
+                for message_id in request.message_ids:
+                    self.service.users().messages().delete(userId="me", id=message_id).execute()
+            elif request.query:
+                messages = (
+                    self.service.users()
+                    .messages()
+                    .list(userId="me", q=request.query)
+                    .execute()
+                )
+                for message in messages.get("messages", []):
+                    self.service.users().messages().delete(userId="me", id=message["id"]).execute()
+            return gmail_lst
+        except Exception as e:
+            raise InferenceError("Error deleting emails via GmailClient: %s", str(e))
 
 
 def _get_message_body(payload):

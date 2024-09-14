@@ -56,7 +56,7 @@ class Agent(BaseModel, ABC):
             response.choices[0].message.tool_calls[0].function.parsed_arguments
         )
         log.info(f"Parsed Arguments: {parsed_arguments}")
-
+        
         return response, function_name
 
 

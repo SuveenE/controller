@@ -1,10 +1,6 @@
-import json
 import logging
 from typing import Any
 
-import requests
-from gql import Client, gql
-from gql.transport.requests import RequestsHTTPTransport
 from slack_sdk import WebClient
 
 from app.models.integrations.slack import (
