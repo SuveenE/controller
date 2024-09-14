@@ -3,6 +3,7 @@ import os
 from dotenv import load_dotenv
 
 from app.connectors.client.x import XClient
+
 # from app.models.agents.base.template import Agent, AgentResponse
 # from app.models.agents.base.triage import TriageAgent
 # from app.models.agents.main import MAIN_TRIAGE_AGENT
@@ -18,14 +19,13 @@ X_CLIENT_ID = os.getenv("X_CLIENT_ID")
 X_CLIENT_SECRET = os.getenv("X_CLIENT_SECRET")
 X_ACCESS_TOKEN = os.getenv("X_ACCESS_TOKEN")
 
-client=XClient(access_token=X_ACCESS_TOKEN)
+client = XClient(access_token=X_ACCESS_TOKEN)
 
 
 def main():
     # HARD CODE TEST
     # client.create_tweet("happy")
     client.get_tweets_past_hour()
-    
 
     ## AGENT TEST
     # chat_history: list[Message] = []
