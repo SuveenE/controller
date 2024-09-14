@@ -1,5 +1,6 @@
-import { AuthParamProps } from "@/types/integration";
+import { AuthParamProps, integrationEnum } from "@/types/integration";
 import AuthDialogContent from "@/components/dialog-content/auth-base";
+import { capitaliseFirstLetter } from "@/lib/utils";
 
 export default function XAuthDialogContent({
   apiKey,
@@ -8,7 +9,7 @@ export default function XAuthDialogContent({
 }: AuthParamProps) {
   return (
     <AuthDialogContent
-      name="X"
+      name={capitaliseFirstLetter(integrationEnum.Values.x)}
       apiKey={apiKey}
       loginBase={loginBase}
       exchangeBase={exchangeBase}

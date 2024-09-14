@@ -1,5 +1,6 @@
-import { AuthParamProps } from "@/types/integration";
+import { AuthParamProps, integrationEnum } from "@/types/integration";
 import AuthDialogContent from "@/components/dialog-content/auth-base";
+import { capitaliseFirstLetter } from "@/lib/utils";
 
 export default function SlackAuthDialogContent({
   apiKey,
@@ -8,7 +9,7 @@ export default function SlackAuthDialogContent({
 }: AuthParamProps) {
   return (
     <AuthDialogContent
-      name="Slack"
+      name={capitaliseFirstLetter(integrationEnum.Values.slack)}
       apiKey={apiKey}
       loginBase={loginBase}
       exchangeBase={exchangeBase}

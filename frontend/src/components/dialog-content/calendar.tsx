@@ -1,5 +1,6 @@
-import { AuthParamProps } from "@/types/integration";
+import { AuthParamProps, integrationEnum } from "@/types/integration";
 import AuthDialogContent from "@/components/dialog-content/auth-base";
+import { capitaliseFirstLetter } from "@/lib/utils";
 
 export default function GoogleCalendarAuthDialogContent({
   apiKey,
@@ -8,7 +9,7 @@ export default function GoogleCalendarAuthDialogContent({
 }: AuthParamProps) {
   return (
     <AuthDialogContent
-      name="Calendar"
+      name={capitaliseFirstLetter(integrationEnum.Values.calendar)}
       apiKey={apiKey}
       loginBase={loginBase}
       exchangeBase={exchangeBase}
