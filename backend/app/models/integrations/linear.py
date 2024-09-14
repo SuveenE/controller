@@ -144,6 +144,7 @@ class LinearCreateIssueRequest(BaseModel):
     project: Optional[str]
 
 
+# Might need to revisit this because u want to update different issues differently, so make two calls?
 class LinearUpdateIssuesRequest(BaseModel):
     filter_conditions: LinearFilterIssuesRequest
     update_conditions: LinearCreateIssueRequest
