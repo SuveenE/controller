@@ -9,7 +9,6 @@ from app.models.integrations.gmail import (
     Gmail,
     GmailDeleteEmailsRequest,
     GmailFilterEmailsRequest,
-    GmailGetEmailsRequest,
     GmailSendEmailRequest,
     MarkAsReadRequest,
 )

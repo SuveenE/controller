@@ -10,3 +10,11 @@ A very cool open-source project!
 ```
 docker-compose up --build
 ```
+
+## Development
+
+Copy the existing environment template file
+```bash
+# Create .env file (by copying from .env.example)
+cp .env.example .env
+```
