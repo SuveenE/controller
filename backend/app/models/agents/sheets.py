@@ -1,7 +1,6 @@
+from backend.app.config import OPENAI_GPT4O_MINI
 from backend.app.models.agents.base.summary import transfer_to_summary_agent
 from backend.app.models.agents.base.triage import TriageAgent
-from backend.app.config import OPENAI_GPT4O_MINI
-
 
 SHEETS_TRIAGE_AGENT = TriageAgent(
     name="Google Sheets Triage Agent",

@@ -5,8 +5,8 @@ from dotenv import load_dotenv
 from app.connectors.client.gmail import GmailClient
 from app.models.agents.base.template import AgentResponse
 from app.models.agents.gmail import GMAIL_TRIAGE_AGENT
-from app.models.query import Message, Role
 from app.models.integrations.gmail import GmailFilterEmailsRequest, MarkAsReadRequest
+from app.models.query import Message, Role
 
 load_dotenv()
 
@@ -24,13 +24,13 @@ client = GmailClient(
 
 
 def main():
-    # HARD CODE TESTcd 
+    # HARD CODE TESTcd
     # print(client.mark_as_read(
     #     request=MarkAsReadRequest(
     #         filter_conditions=GmailFilterEmailsRequest(
     #             query='id:191dc984027d9550'
     #         )
-    #     )   
+    #     )
     # ))
     print(
         client.get_emails(

@@ -32,7 +32,6 @@ class GoogleSheetsClient:
         )
         return result.get("values", [])
 
-
     # def write_sheet(self, range_name, values):
     #     body = {"values": values}
     #     sheet = self.service.spreadsheets()

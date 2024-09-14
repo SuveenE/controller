@@ -1,13 +1,14 @@
 import logging
 from abc import ABC, abstractmethod
 from typing import Any, Optional
-from dotenv import load_dotenv
 
+from dotenv import load_dotenv
 from openai import OpenAI
 from pydantic import BaseModel
 
 from app.models.integrations.base import Integration
 from app.models.query import Message
+
 load_dotenv()
 
 logging.basicConfig(level=logging.INFO)
@@ -56,7 +57,7 @@ class Agent(BaseModel, ABC):
             response.choices[0].message.tool_calls[0].function.parsed_arguments
         )
         log.info(f"Parsed Arguments: {parsed_arguments}")
-        
+
         return response, function_name
 
 

@@ -24,6 +24,7 @@ logging.basicConfig(level=logging.INFO)
 logging.getLogger("httpx").setLevel(logging.WARNING)
 
 log = logging.getLogger(__name__)
+
 ##############################################
 
 
@@ -76,7 +77,9 @@ GMAIL_GET_REQUEST_AGENT = GmailGetRequestAgent(
     name="Gmail Get Request Agent",
     integration_group=Integration.GMAIL,
     model=OPENAI_GPT4O_MINI,
-    system_prompt="You are an expert at retrieving emails via the Gmail API. Your task is to help a user retrieve a group of emails by supplying the correct query parameters to the gmail API. Each condition should be separated by a space.",
+    system_prompt="""You are an expert at retrieving emails via the Gmail API. Your task is to help a user retrieve a group of emails by supplying the correct query parameters to the gmail API. Follow the rules below:
+    
+1. Prioritise using the message_id as the filter condition where possible. If the get request concerns multiple emails, populate all the relevant ids in the "message_ids" parameter.""",
     tools=[openai.pydantic_function_tool(GmailGetEmailsRequest)],
 )
 
@@ -133,13 +136,10 @@ GMAIL_UPDATE_REQUEST_AGENT = GmailUpdateRequestAgent(
     name="Gmail Update Request Agent",
     integration_group=Integration.GMAIL,
     model=OPENAI_GPT4O_MINI,
-    system_prompt="""You are an expert at managing emails via the Gmail API. Your task is to help a user update the state of emails by supplying the correct query parameters to the gmail API. Follow the following rules:
+    system_prompt="""You are an expert at managing emails via the Gmail API. Your task is to help a user update the state of emails by supplying the correct query parameters to the gmail API. Follow the rules below:
     
-1. Prioritise using the id as the filter condition of the query where possible.
-2. If the update request concerns multiple emails, ensure that the query accounts for all the emails.""",
-    tools=[
-        openai.pydantic_function_tool(MarkAsReadRequest)
-    ],
+1. Prioritise using the message_id as the filter condition where possible. If the update request concerns multiple emails, populate all the relevant ids in the "message_ids" parameter.""",
+    tools=[openai.pydantic_function_tool(MarkAsReadRequest)],
 )
 
 ##############################################
@@ -175,7 +175,7 @@ class GmailPostRequestAgent(Agent):
                         role=Role.ASSISTANT,
                         content=f"The following email have been sent successfully",
                         data=[sent_email.model_dump()],
-                    )
+                    ),
                 )
             case _:
                 raise InferenceError(f"Function {function_name} not supported")
@@ -242,13 +242,14 @@ GMAIL_DELETE_REQUEST_AGENT = GmailDeleteRequestAgent(
     name="Gmail Delete Request Agent",
     integration_group=Integration.GMAIL,
     model=OPENAI_GPT4O_MINI,
-    system_prompt="You are an expert at deleteing emails via the Gmail API. Your task is to help a user delete emails by supplying the correct request parameters to the gmail API.",
-    tools=[
-        openai.pydantic_function_tool(GmailDeleteEmailsRequest)
-    ],
+    system_prompt="""You are an expert at deleting emails via the Gmail API. Your task is to help a user delete emails by supplying the correct request parameters to the gmail API. Follow the rules below:
+    
+1. Prioritise using the message_id as the filter condition where possible. If the delete request concerns multiple emails, populate all the relevant ids in the "message_ids" parameter.""",
+    tools=[openai.pydantic_function_tool(GmailDeleteEmailsRequest)],
 )
 
 ##############################################
+
 
 def transfer_to_gmail_post_request_agent() -> GmailPostRequestAgent:
     return GMAIL_POST_REQUEST_AGENT
@@ -264,6 +265,7 @@ def transfer_to_gmail_update_request_agent() -> GmailUpdateRequestAgent:
 
 def transfer_to_gmail_delete_request_agent() -> GmailDeleteRequestAgent:
     return GMAIL_DELETE_REQUEST_AGENT
+
 
 GMAIL_TRIAGE_AGENT = TriageAgent(
     name="Triage Agent",

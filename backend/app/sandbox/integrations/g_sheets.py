@@ -9,6 +9,7 @@ SHEETS_REFRESH_TOKEN = os.getenv("SHEETS_REFRESH_TOKEN")
 SHEETS_CLIENT_ID = os.getenv("SHEETS_CLIENT_ID")
 SHEETS_CLIENT_SECRET = os.getenv("SHEETS_CLIENT_SECRET")
 
+
 def main():
     from app.connectors.client.sheets import GoogleSheetsClient
     from app.models.integrations.sheets import SheetsGetRequest
