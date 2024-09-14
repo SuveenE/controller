@@ -6,6 +6,7 @@ from app.connectors.client.gmail import GmailClient
 from app.models.agents.base.template import AgentResponse
 from app.models.agents.gmail import GMAIL_TRIAGE_AGENT
 from app.models.query import Message, Role
+from app.models.integrations.gmail import GmailFilterEmailsRequest, MarkAsReadRequest
 
 load_dotenv()
 
@@ -23,26 +24,40 @@ client = GmailClient(
 
 
 def main():
-    # HARD CODE TEST
+    # HARD CODE TESTcd 
+    # print(client.mark_as_read(
+    #     request=MarkAsReadRequest(
+    #         filter_conditions=GmailFilterEmailsRequest(
+    #             query='id:191dc984027d9550'
+    #         )
+    #     )   
+    # ))
+    print(
+        client.get_emails(
+            request=GmailFilterEmailsRequest(
+                query="id:190d75079242e682 OR id:190dc76db933f558"
+            )
+        )
+    )
 
     ## AGENT TEST
-    chat_history: list[Message] = []
-    message = Message(
-        role=Role.USER,
-        content="I want get all emails from hugeewhale@gmail.com that are unread. There should be one in particular that asks for my address. I live at 91 Yishun Ave 1, S(769135) so please send a reply to that email containing the information",
-    ).model_dump()
-    chat_history.append(message)
-    response = AgentResponse(agent=GMAIL_TRIAGE_AGENT, message=message)
-    while response.agent:
-        response = response.agent.query(
-            chat_history=chat_history,
-            access_token=GMAIL_ACCESS_TOKEN,
-            refresh_token=GMAIL_REFRESH_TOKEN,
-            client_id=GMAIL_CLIENT_ID,
-            client_secret=GMAIL_CLIENT_SECRET,
-        )
-        chat_history.append(Message(role=Role.ASSISTANT, content=str(response.message)))
-    print(chat_history)
+    # chat_history: list[Message] = []
+    # message = Message(
+    #     role=Role.USER,
+    #     content="I want get all emails from hugeewhale@gmail.com that are unread. There should be one in particular that asks for my address. I live at 91 Yishun Ave 1, S(769135) so please send a reply to that email containing the information",
+    # ).model_dump()
+    # chat_history.append(message)
+    # response = AgentResponse(agent=GMAIL_TRIAGE_AGENT, message=message)
+    # while response.agent:
+    #     response = response.agent.query(
+    #         chat_history=chat_history,
+    #         access_token=GMAIL_ACCESS_TOKEN,
+    #         refresh_token=GMAIL_REFRESH_TOKEN,
+    #         client_id=GMAIL_CLIENT_ID,
+    #         client_secret=GMAIL_CLIENT_SECRET,
+    #     )
+    #     chat_history.append(Message(role=Role.ASSISTANT, content=str(response.message)))
+    # print(chat_history)
 
 
 if __name__ == "__main__":

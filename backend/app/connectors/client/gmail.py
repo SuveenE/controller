@@ -9,7 +9,7 @@ from app.models.integrations.gmail import (
     Gmail,
     GmailGetEmailsRequest,
     GmailSendEmailRequest,
-    GmailUpdateEmailsRequest,
+    MarkAsReadRequest,
 )
 
 TOKEN_URI = "https://oauth2.googleapis.com/token"
@@ -50,66 +50,81 @@ class GmailClient:
         except Exception as e:
             raise InferenceError("Error sending email via GmailClient: %s", str(e))
 
-    def update_emails(self, request: GmailUpdateEmailsRequest) -> list[Gmail]:
-        emails_to_update: list[Gmail] = self.get_emails(request.filter_conditions)
-        print("EMAILS TO UPDATE", emails_to_update)
+    def mark_as_read(self, request: MarkAsReadRequest) -> list[Gmail]:
+        emails_to_update: list[Gmail] = self.get_emails(request=request)
         updated_emails: list[Gmail] = []
-
         for email in emails_to_update:
             self.service.users().messages().modify(
                 userId="me",
                 id=email.id,
-                body={"labelIds": request.update_conditions.labelIds},
+                body={"removeLabelIds": ["UNREAD"]},
             ).execute()
-            email.labelIds = request.update_conditions.labelIds
+            email.labelIds.remove("UNREAD")
             updated_emails.append(email)
-
         return updated_emails
 
     def get_emails(self, request: GmailGetEmailsRequest) -> list[Gmail]:
         try:
-            messages = (
-                self.service.users()
-                .messages()
-                .list(userId="me", q=request.query)
-                .execute()
-            )
-
-            gmail_lst: list[Gmail] = []
-            for message in messages.get("messages", []):
+            # Specific id query
+            if request.query.startswith("id:"):
+                message_id = request.query.split(":")[-1].strip()
                 full_msg = (
                     self.service.users()
                     .messages()
-                    .get(userId="me", id=message["id"])
+                    .get(userId="me", id=message_id)
                     .execute()
                 )
-
+                
                 headers = full_msg["payload"]["headers"]
-                gmail_lst.append(
-                    Gmail(
-                        id=message["id"],
-                        labelIds=full_msg["labelIds"],
-                        sender=next(
-                            (
-                                header["value"]
-                                for header in headers
-                                if header["name"].lower() == "from"
-                            ),
-                            "",
-                        ),
-                        subject=next(
-                            (
-                                header["value"]
-                                for header in headers
-                                if header["name"].lower() == "subject"
-                            ),
-                            "",
-                        ),
-                        body=_get_message_body(full_msg["payload"]),
-                    )
+                return [Gmail(
+                    id=full_msg["id"],
+                    labelIds=full_msg["labelIds"],
+                    sender=next(
+                        (header["value"] for header in headers if header["name"].lower() == "from"),
+                        "",
+                    ),
+                    subject=next(
+                        (header["value"] for header in headers if header["name"].lower() == "subject"),
+                        "",
+                    ),
+                    body=_get_message_body(full_msg["payload"]),
+                )]
+            else:
+                messages = (
+                    self.service.users()
+                    .messages()
+                    .list(userId="me", q=request.query)
+                    .execute()
                 )
-            return gmail_lst
+                
+                gmail_lst: list[Gmail] = []
+                for message in messages.get("messages", []):
+                    full_msg = (
+                        self.service.users()
+                        .messages()
+                        .get(userId="me", id=message["id"])
+                        .execute()
+                    )
+
+                    headers = full_msg["payload"]["headers"]
+                    gmail_lst.append(
+                        Gmail(
+                            id=message["id"],
+                            labelIds=full_msg["labelIds"],
+                            sender=next(
+                                (header["value"] for header in headers if header["name"].lower() == "from"),
+                                "",
+                            ),
+                            subject=next(
+                                (header["value"] for header in headers if header["name"].lower() == "subject"),
+                                "",
+                            ),
+                            body=_get_message_body(full_msg["payload"]),
+                        )
+                    )
+                return gmail_lst
         except Exception as e:
+            print(f"Error getting emails via GmailClient: {e}")  # Print the error for debugging
             raise InferenceError(f"Error getting emails via GmailClient: {e}")
 
 

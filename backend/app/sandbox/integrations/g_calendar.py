@@ -4,29 +4,49 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-SHEETS_ACCESS_TOKEN = os.getenv("SHEETS_ACCESS_TOKEN")
-SHEETS_REFRESH_TOKEN = os.getenv("SHEETS_REFRESH_TOKEN")
-SHEETS_CLIENT_ID = os.getenv("SHEETS_CLIENT_ID")
-SHEETS_CLIENT_SECRET = os.getenv("SHEETS_CLIENT_SECRET")
+CALENDAR_ACCESS_TOKEN = os.getenv("CALENDAR_ACCESS_TOKEN")
+CALENDAR_REFRESH_TOKEN = os.getenv("CALENDAR_REFRESH_TOKEN")
+CALENDAR_CLIENT_ID = os.getenv("CALENDAR_CLIENT_ID")
+CALENDAR_CLIENT_SECRET = os.getenv("CALENDAR_CLIENT_SECRET")
+
 
 def main():
-    from app.connectors.client.sheets import GoogleSheetsClient
-    from app.models.integrations.sheets import SheetsGetRequest
+    from app.connectors.client.calendar import CalendarClient
+    from app.models.integrations.calendar import (
+        CalendarCreateEventRequest,
+        CalendarDeleteEventsRequest,
+        CalendarGetEventsRequest,
+        CalendarUpdateEventRequest,
+        Timezone,
+    )
 
-    client = GoogleSheetsClient(
-        access_token=SHEETS_ACCESS_TOKEN,
-        refresh_token=SHEETS_REFRESH_TOKEN,
-        client_id=SHEETS_CLIENT_ID,
-        client_secret=SHEETS_CLIENT_SECRET,
+    client = CalendarClient(
+        access_token=CALENDAR_ACCESS_TOKEN,
+        refresh_token=CALENDAR_REFRESH_TOKEN,
+        client_id=CALENDAR_CLIENT_ID,
+        client_secret=CALENDAR_CLIENT_SECRET,
     )
 
     # HARD CODE TEST
     print(
-        client.read_sheet(
-            request=SheetsGetRequest(
-                spreadsheet_id="1YVgOzMDESAGBaAjXlvB941HDzyrFvNqzcHOnwEifzoY",
-                sheet_name="Controllers",
+        client.get_events(
+            request=CalendarGetEventsRequest(
+                time_min="2024-09-01T09:00:00Z",
+                time_max="2024-09-15T09:00:00Z",
+                max_results=10,
             )
+        )
+    )
+
+    client.update_event(
+        request=CalendarUpdateEventRequest(
+            event_id="4hn8ukbpdebk0tsmp4u5a8rocj",
+            summary="Updated Summary",
+            description="Updated Description",
+            location=None,
+            start_time=None,
+            end_time=None,
+            attendees=["chenjinyang4192@gmail.com"],
         )
     )
 

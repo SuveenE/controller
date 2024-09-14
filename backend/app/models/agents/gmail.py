@@ -16,7 +16,7 @@ from app.models.integrations.gmail import (
     GmailGetEmailsRequest,
     GmailReadEmailsRequest,
     GmailSendEmailRequest,
-    GmailUpdateEmailsRequest,
+    MarkAsReadRequest,
 )
 from app.models.query import Message, Role
 
@@ -100,9 +100,10 @@ class GmailUpdateRequestAgent(Agent):
             client_id=client_id,
             client_secret=client_secret,
         )
+
         match function_name:
-            case GmailUpdateEmailsRequest.__name__:
-                updated_emails: list[Gmail] = client.update_emails(
+            case MarkAsReadRequest.__name__:
+                updated_emails: list[Gmail] = client.mark_as_read(
                     request=response.choices[0]
                     .message.tool_calls[0]
                     .function.parsed_arguments
@@ -120,7 +121,7 @@ class GmailUpdateRequestAgent(Agent):
                     agent=MAIN_TRIAGE_AGENT,
                     message=Message(
                         role=Role.ASSISTANT,
-                        content=f"Here are the updated emails",
+                        content=f"Here are the emails marked as read",
                         data=[email.model_dump() for email in updated_emails],
                     ),
                 )
@@ -129,14 +130,16 @@ class GmailUpdateRequestAgent(Agent):
 
 
 GMAIL_UPDATE_REQUEST_AGENT = GmailUpdateRequestAgent(
-    name="Update Request Agent",
+    name="Gmail Update Request Agent",
     integration_group=Integration.GMAIL,
     model=OPENAI_GPT4O_MINI,
     system_prompt="""You are an expert at managing emails via the Gmail API. Your task is to help a user update the state of emails by supplying the correct query parameters to the gmail API. Follow the following rules:
     
 1. Prioritise using the id as the filter condition of the query where possible.
-2. If you are updating one particular labelId, make sure to include the other remaining labelIds that are not being updated as well.""",
-    tools=[openai.pydantic_function_tool(GmailUpdateEmailsRequest)],
+2. If the update request concerns multiple emails, ensure that the query accounts for all the emails.""",
+    tools=[
+        openai.pydantic_function_tool(MarkAsReadRequest)
+    ],
 )
 
 ##############################################

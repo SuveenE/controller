@@ -27,10 +27,9 @@ class GmailDeleteEmailsRequest(GmailFilterEmailsRequest):
     pass
 
 
-class GmailUpdateEmailsRequest(BaseModel):
-    filter_conditions: GmailFilterEmailsRequest
-    update_conditions: GmailEditableFields
-
+class MarkAsReadRequest(GmailFilterEmailsRequest):
+    pass
+    
 
 class GmailReadEmailsRequest(BaseModel):
     query: str

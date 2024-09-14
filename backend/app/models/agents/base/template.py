@@ -1,12 +1,14 @@
 import logging
 from abc import ABC, abstractmethod
 from typing import Any, Optional
+from dotenv import load_dotenv
 
 from openai import OpenAI
 from pydantic import BaseModel
 
 from app.models.integrations.base import Integration
 from app.models.query import Message
+load_dotenv()
 
 logging.basicConfig(level=logging.INFO)
 log = logging.getLogger(__name__)
